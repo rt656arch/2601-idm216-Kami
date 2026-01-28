@@ -1,0 +1,64 @@
+@font-face {
+    font-family: BlackHanSans;
+    src: url(../fonts/BlackHanSans.ttf);
+}
+
+@font-face {
+    font-family: DM Sans;
+    src: url(../fonts/DMSans.ttf);
+}
+
+html {
+   --header-font: BlackHanSans;
+   --body-font: DM Sans;
+}
+
+body {
+    background-color: #F1E7DB;
+    padding: 40px;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--header-font);
+    font-weight: 200;
+    line-height: 1;
+}
+
+html {
+    background-color: #F1E7DB;
+}
+
+header {
+    text-align: center;
+}
+
+body {
+    font-family: var(--body-font);
+}
+
+.db-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.db-table th,
+.db-table td {
+    padding: 12px 16px;
+    border: 1px solid #F1E7DB;
+    text-align: left;
+}
+
+.db-table th {
+    background-color: #D72F19;
+    color: white;
+    text-transform: capitalize;
+}
+
+.db-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* .db-table tr:hover {
+    background-color: #eef;
+} */
