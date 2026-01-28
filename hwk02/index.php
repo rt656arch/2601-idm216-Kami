@@ -15,9 +15,14 @@ $connection->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Database Website</title>
-    <link rel="stylesheet" href="../css/normalize.css">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
+
+<header>
+    <h1>Team Cloverr</h1>
+    <h2>Kami's Food Truck | Database Display Website</h2>
+</header>
 
 <body>
     <h2>Menu Items</h2>
