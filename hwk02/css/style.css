@@ -62,3 +62,17 @@ body {
 /* .db-table tr:hover {
     background-color: #eef;
 } */
+
+.img-cell {
+    width: 80px;         
+    height: 80px;
+    padding: 0;
+    overflow: hidden; 
+}
+
+.img-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    display: block;
+}

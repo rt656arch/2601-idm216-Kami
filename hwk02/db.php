@@ -1,24 +1,16 @@
 <?php
 
-// Load environment variables
-$env_vars = [
-    'DB_SERVER'   => $_SERVER['REDIRECT_DB_SERVER']   ?? $_SERVER['DB_SERVER']   ?? null,
-    'DB_USERNAME' => $_SERVER['REDIRECT_DB_USERNAME'] ?? $_SERVER['DB_USERNAME'] ?? null,
-    'DB_PASSWORD' => $_SERVER['REDIRECT_DB_PASSWORD'] ?? $_SERVER['DB_PASSWORD'] ?? null,
-    'DB_NAME'     => $_SERVER['REDIRECT_DB_NAME']     ?? $_SERVER['DB_NAME']     ?? null
-];
+$env_file = __DIR__ . '/.env.php';
+$env = file_exists($env_file) ? require $env_file : [];
 
-if (in_array(null, $env_vars, true))
-    die('Missing required environment variables');
+define('DB_SERVER', $env['DB_SERVER'] ?? 'localhost');
+define('DB_USER',   $env['DB_USER'] ?? 'root');
+define('DB_PASS',   $env['DB_PASS'] ?? 'root');
+define('DB_NAME',   $env['DB_NAME'] ?? 'idm250');
 
-define('DB_SERVER', $env_vars['DB_SERVER']);
-define('DB_USER',   $env_vars['DB_USERNAME']);
-define('DB_PASS',   $env_vars['DB_PASSWORD']);
-define('DB_NAME',   $env_vars['DB_NAME']);
-
-// Create database connection 
 $connection = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
-if ($connection->connect_error)
+if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
+}
 ?>
