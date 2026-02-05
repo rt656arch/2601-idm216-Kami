@@ -1,0 +1,112 @@
+@font-face {
+    font-family: BlackHanSans;
+    src: url(../fonts/BlackHanSans.ttf);
+}
+
+@font-face {
+    font-family: DM Sans;
+    src: url(../fonts/DMSans.ttf);
+}
+
+html {
+   --header-font: BlackHanSans;
+   --body-font: DM Sans;
+  
+  --primary-background: #F1E7DB;
+  --secondary-background: #FDF7F0;
+   --primary-red: #D72F1F;
+   --primary-blue: #1D152C;
+   --primary-yellow: #FEBF43;
+   --black: #000;
+}
+
+h1, h2, h3, h4, p {
+  padding: 0;
+  margin-block: 8px;
+}
+
+h1 {
+  font-family: var(--header-font);
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+h2 {
+  font-family: var(--header-font);
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+h3 {
+  font-family: var(--body-font);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+h4 {
+  font-family: var(--body-font);
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+p {
+  font-family: var(--body-font);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+body {
+  background-color: var(--primary-background);
+}
+
+.menu-item-card {
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  background-color: var(--secondary-background);
+  border: 1px solid black;
+  
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item-img {
+  height: 50%;
+  flex: 1;
+}
+
+.menu-item-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px 10px 0px 0px;
+    object-fit: cover; 
+    display: block;
+}
+
+.menu-item-info {
+  padding: 5px 12px;
+}
+
+.menu-item-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.menu-item-name h3 {
+  color: var(--primary-red);
+}
+
+.menu-item-text h4 {
+  color: var(--primary-blue);
+}
+
+.menu-item-price h4 {
+  font-style: italic;
+}
+
+.menu-item-info {
+  height: 50%;
+  flex: 1;
+}
