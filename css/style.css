@@ -55,6 +55,10 @@ p {
   line-height: 1.2;
 }
 
+a, button {
+  font-family: var(--body-font);
+}
+
 body {
   background-color: var(--primary-background);
 }
@@ -110,3 +114,4 @@ body {
   height: 50%;
   flex: 1;
 }
+

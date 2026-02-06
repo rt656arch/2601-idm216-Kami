@@ -16,8 +16,15 @@ if (!isset($result)) {
     <title>Menu Items Page | Form </title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/noramlize.css">
+    <link rel="stylesheet" href="./css/main.css">
+</head>
 
-    <form method="POST">
+<body>
+    <header>
+        <h1>Team Cloverr</h1>
+        <h2>Kami's Food Truck | Order Menu Items | Form</h2>
+    </header>
+    <form method="POST" action="">
         <?php
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
@@ -29,32 +36,33 @@ if (!isset($result)) {
             $image_name = str_replace(' ', '-', $row['name']);
             $image_path = "./media/menu-images/high-quality/" . $image_name . ".jpg";
         ?>
-        <input type="checkbox" name="items[]" id="<?php echo $item_name?>" value="<?php echo $item_name?>"/>
-        <label for="item-<?php echo $item_id; ?>">
-            <div class="item-info">
-                <p><?php echo htmlspecialchars($item_id)?></p>
-                <p><?php echo htmlspecialchars($item_name)?></p>
-                <p><?php echo htmlspecialchars($item_base_price)?></p>
-                <p><?php echo htmlspecialchars($item_description)?></p>
-                <img src="<?php echo htmlspecialchars($image_path)?>" alt="Picture of <?php echo htmlspecialchars($item_name)?>" style="width: 200px">
+            <div class="menu-item">
+                <input type="checkbox" name="items[]" id="<?php echo $item_name?>" value="<?php echo $item_name?>" class="item-checkbox"/>
+                <label for="<?php echo $item_name?>" class="menu-item-info"> 
+                    <div class="item-info">
+                        <p class="item-id"><?php echo htmlspecialchars($item_id)?></p>
+                        <h4 class="item-name"><?php echo htmlspecialchars($item_name)?></h4>
+                        <p class="item-price">$<?php echo htmlspecialchars($item_base_price)?></p>
+                        <p class="item-desc"><?php echo htmlspecialchars($item_description)?></p>
+                    </div>
+                    <div class="item-img">
+                        <img src="<?php echo htmlspecialchars($image_path)?>" alt="Picture of <?php echo htmlspecialchars($item_name)?>" style="width: 200px">
+                    </div>
+                </label>
             </div>
-    </label>
-    <?php }
-        } ?>
-    <button type="submit" name="submit_order">Order</button>
+        <?php }
+            } ?>
+        <button type="submit" name="submit_order" class="submit-btn" onclick="window.location.href=window.location.pathname;">Order</button>
+        <button type="reset" class="reset-btn" onclick="window.location.href=window.location.pathname;">Reset</button>
     </form>
 
+    <h2>Your Order</h2>
     <?php
         if (isset($_POST['submit_order']) && !empty($_POST['items'])) {
-
-            echo "<h2>Your Order</h2>";
-
             $total = 0;
-
             foreach ($_POST['items'] as $selected_id) {
-
-                $stmt = $connection->prepare("SELECT name, description, `base-price` FROM menu_items WHERE id = ?");
-                $stmt->bind_param("i", $selected_id);
+                $stmt = $connection->prepare("SELECT name, description, `base-price` FROM menu_items WHERE name = ?");
+                $stmt->bind_param("s", $selected_id);
                 $stmt->execute();
                 $result_item = $stmt->get_result();
 
@@ -65,20 +73,50 @@ if (!isset($result)) {
                     $item_description = $row['description'];
 
                     echo "<div class='order-item'>";
-                    echo "<p><strong>" . htmlspecialchars($item_name) . "</strong></p>";
-                    echo "<p>$" . htmlspecialchars($item_price) . "</p>";
-                    echo "<p>" . htmlspecialchars($item_description) . "</p>";
+                    echo "<p class='item-name'><strong>" . htmlspecialchars($item_name) . "</strong></p>";
+                    echo "<p class='item-price'>$" . htmlspecialchars($item_price) . "</p>";
                     echo "</div>";
 
                     $total += $item_price;
                 }
             }
-
             echo "<h3>Total: $" . number_format($total, 2) . "</h3>";
         }
+        else {
+            echo "<p>Your order is currently empty</p>";
+            }
+
+        // echo "<h3>Debug Items Array:</h3>";
+        //     if (!empty($_POST['items'])) {
+        //         echo "<pre>";
+        //         print_r($_POST['items']);
+        //         echo "</pre>";
+        //     } else {
+        //         echo "<p>items[] is empty</p>";
+        //     }
 
         $connection->close();
-        ?>
+    ?>
 
-</head>
-<body>
+    <div id="bottom-anchor"></div>
+
+    <script>
+// If we stored scroll position, go there
+if (localStorage.getItem("scrollToBottom") === "true") {
+    const anchor = document.getElementById("bottom-anchor");
+    if (anchor) {
+        anchor.scrollIntoView({ behavior: "instant" });
+    }
+    localStorage.removeItem("scrollToBottom");
+}
+
+// When reset button is clicked, remember to scroll
+document.querySelector(".reset-btn").addEventListener("click", function () {
+    localStorage.setItem("scrollToBottom", "true");
+});
+document.querySelector(".submit-btn").addEventListener("click", function () {
+    localStorage.setItem("scrollToBottom", "true");
+});
+</script>
+</body>
+</html>

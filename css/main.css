@@ -1,0 +1,150 @@
+body {
+    margin: 40px 60px;
+}
+
+header {
+    text-align: center;
+}
+
+.menu-item {
+    display: grid;
+    grid-template-columns: 1fr 8fr;
+    align-content: center;
+    gap: 16px;
+
+    padding: 16px;
+    margin-bottom: 14px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.menu-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+}
+
+.item-checkbox {
+    width: 20px;
+    height: 20px;
+    align-self: center;
+    cursor: pointer;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.item-name {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.item-desc {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+.item-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #c0392b;
+    margin-top: 4px;
+}
+
+.item-id {
+    font-size: 16px;
+    color: #aaa;
+}
+
+.item-img img{
+    width: 120px;       /* same as image size */
+    height: 120px;
+    object-fit: cover; /* hides overflow */
+    border-radius: 10px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    margin: 30px auto 10px;
+
+    padding: 14px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+
+    background: var(--primary-red);
+    color: white;
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.item-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 24px;
+    height: 24px;
+    border: 2px solid #bbb;
+    border-radius: 6px;
+    background: white;
+
+    cursor: pointer;
+    position: relative;
+
+    display: flex;        
+    align-items: center;  
+    justify-content: center; 
+}
+
+.item-checkbox:checked {
+    background: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.item-checkbox:checked::after {
+    content: "✔";
+    color: white;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.item-checkbox {
+    margin: 0 auto;
+}
+
+.menu-item-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.order-item {
+    background-color: white;
+    width: 200px;
+    border-radius: 10px;
+    padding: 6px 15px;
+    margin-bottom: 10px;
+}
