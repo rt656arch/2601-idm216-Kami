@@ -134,6 +134,6 @@ $connection->close();
         </div>
     </div>
 
-    <a class="back-to-menu" href="menu.php">← Back to Menu</a>
+    <a class="back-to-menu" href="main.php">← Back to Menu</a>
 </body>
 </html>
