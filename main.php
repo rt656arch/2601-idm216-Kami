@@ -1,7 +1,8 @@
 <!-- This is an form version of the menu items that stores ordered info into an array -->
 
 <?php
-// require 'db.php';
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 require 'submit-order.php';
 
 if (!isset($result)) {
@@ -39,7 +40,6 @@ if (!isset($result)) {
                 $image_path = "./media/menu-images/" . $image_name . ".jpg";
             ?>
         <div class="menu-item">
-            <!-- ITEM CHECKBOX (NOW USING ID) -->
             <input type="checkbox" 
                 name="items[]" 
                 id="item-<?php echo $item_id; ?>" 
@@ -59,7 +59,7 @@ if (!isset($result)) {
                 </div>
             </label>
 
-        <!-- ADDONS QUERY -->
+        <!-- addons -->
         <?php
             $stmt_addons = $connection->prepare("SELECT id, name, price FROM add_on_items WHERE item_id = ?");
             $stmt_addons->bind_param("i", $item_id);
@@ -89,11 +89,52 @@ if (!isset($result)) {
             }
         }
         ?>
+        <div class="tips">
+            <h2>Add a Tip</h2>
+            <div class="tip">
+                <input type="radio" id="tip1" name="tip-amount" value="1">
+                <label for="tip1">$1</label>
+            </div>
+
+            <div class="tip">
+                <input type="radio" id="tip2" name="tip-amount" value="2">
+                <label for="tip2">$2</label>
+            </div>
+
+            <div class="tip">
+                <input type="radio" id="tip3" name="tip-amount" value="3">
+                <label for="tip3">$3</label>
+            </div>
+
+            <div class="tip">
+                <input type="radio" id="no-tip" name="tip-amount" value="0">
+                <label for="no-tip">No Tip</label>
+            </div>
+        </div>
+
+        <div class="account-section">
+            <h2>Create an account</h2>
+
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="user_name">
+            </div>
+
+            <div class="form-group">
+                <label for="number">Number</label>
+                <input type="text" id="number" name="user_number">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="user_password">
+            </div>
+        </div>
+
         <button type="submit" name="submit_order" class="submit-btn">Order</button>
         <button type="reset" class="reset-btn" onclick="window.location.href=window.location.pathname;">Reset</button>
     </form>
     <script>
-        // If we stored scroll position, go there
         if (localStorage.getItem("scrollToBottom") === "true") {
             const anchor = document.getElementById("bottom-anchor");
             if (anchor) {
@@ -102,7 +143,6 @@ if (!isset($result)) {
             localStorage.removeItem("scrollToBottom");
         }
 
-        // When reset button is clicked, remember to scroll
         document.querySelector(".reset-btn").addEventListener("click", function () {
             localStorage.setItem("scrollToBottom", "true");
         });

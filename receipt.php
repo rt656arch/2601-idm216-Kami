@@ -6,12 +6,15 @@ if (isset($_POST['submit_order']) && !empty($_POST['items'])) {
     $sales_tax_rate = 0.08;
     $items   = $_POST['items'];
     $addons  = $_POST['order_items'] ?? [];
+    $tip = $_POST['tip-amount'];
+    $user_name = $_POST['user_name'];
+    $_SESSION['user_name'] = $user_name;
     $subtotal = 0;
 
     $session_id = $_SESSION['db_session_id'];
 
     $stmt = $connection->prepare(
-        "INSERT INTO orders (session_id, subtotal, tax, total, created_at) VALUES (?, 0, 0, 0, NOW())"
+        "INSERT INTO orders (session_id, subtotal, tax, tip, total, created_at) VALUES (?, 0, 0, 0, 0, NOW())"
     );
     $stmt->bind_param("s", $session_id);
     $stmt->execute();
@@ -63,12 +66,12 @@ if (isset($_POST['submit_order']) && !empty($_POST['items'])) {
     }
 
     $tax   = $subtotal * $sales_tax_rate;
-    $total = $subtotal + $tax;
+    $total = $subtotal + $tax + $tip;
 
     $stmt = $connection->prepare(
-        "UPDATE orders SET subtotal = ?, tax = ?, total = ? WHERE id = ?"
+        "UPDATE orders SET subtotal = ?, tax = ?, tip = ?, total = ? WHERE id = ?"
     );
-    $stmt->bind_param("dddi", $subtotal, $tax, $total, $order_id);
+    $stmt->bind_param("ddddi", $subtotal, $tax, $tip, $total, $order_id);
     $stmt->execute();
 
     header("Location: receipt.php?order_id=" . $order_id);
@@ -80,6 +83,7 @@ if (!isset($_GET['order_id'])) {
     exit();
 }
 
+$user_name = $_SESSION['user_name'] ?? "Guest";
 $order_id = (int) $_GET['order_id'];
 
 $stmt = $connection->prepare("SELECT * FROM orders WHERE id = ?");
@@ -108,20 +112,24 @@ $connection->close();
     <link rel="stylesheet" href="./css/receipt.css">
 </head>
 <body>
-    <h2>Your Receipt</h2>
+    <h2 style="font-family: var(--body-font)"><?= $user_name ?>, Your Receipt</h2>
     <h1>Order #<?= $order_id ?></h1>
 
     <div class="receipt-container">
     <?php foreach ($line_items as $line): ?>
         <?php if ($line['type'] === 'item'): ?>
-            <div class="order-item">
-                <span class="order-item-name"><?= htmlspecialchars($line['item_name']) ?></span>
-                <span class="order-item-price">$<?= number_format($line['price'], 2) ?></span>
+            <div class="top-border">
+                <div class="order-item">
+                    <span class="order-item-name"><?= htmlspecialchars($line['item_name']) ?></span>
+                    <span class="order-item-price">$<?= number_format($line['price'], 2) ?></span>
+                </div>
             </div>
         <?php else: ?>
-            <div class="addon">
-                <span class="addon-name">+ <?= htmlspecialchars($line['item_name']) ?></span>
-                <span class="addon-price">$<?= number_format($line['price'], 2) ?></span>
+            <div class="bottom-border">
+                <div class="addon">
+                    <span class="addon-name">+ <?= htmlspecialchars($line['item_name']) ?></span>
+                    <span class="addon-price">$<?= number_format($line['price'], 2) ?></span>
+                </div>
             </div>
         <?php endif; ?>
     <?php endforeach; ?>
@@ -130,6 +138,7 @@ $connection->close();
         <div class="receipt-totals">
             <p>Subtotal: <span>$<?= number_format($order['subtotal'], 2) ?></span></p>
             <p>Tax: <span>$<?= number_format($order['tax'], 2) ?></span></p>
+            <p>Tip: <span>$<?= number_format($order['tip'], 2) ?></span></p>
             <h3>Total: <span>$<?= number_format($order['total'], 2) ?></span></h3>
         </div>
     </div>

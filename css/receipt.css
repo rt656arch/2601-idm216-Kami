@@ -57,12 +57,18 @@ a.back-to-menu:active {
     font-family: var(--body-font); /* match whatever variable or font name you're using globally */
 }
 
+.top-border {
+    border-top: 1px solid #eee;
+}
+.bottom-border {
+    border-bottom: 1px solid #eee;
+}
+
 .order-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
+    padding: 8px 0;
     font-size: 17px;
     font-weight: 600;
 }
@@ -80,7 +86,7 @@ a.back-to-menu:active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 4px 0 4px 16px;
+    padding: 0px 0 4px 16px;
     font-size: 14px;
     color: #666;
 }
