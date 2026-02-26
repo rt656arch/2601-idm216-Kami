@@ -1,5 +1,6 @@
 body {
     margin: 40px 60px;
+    background-color: var(--primary-background);
 }
 
 header {
@@ -141,10 +142,62 @@ button:active {
     justify-content: space-between;
 }
 
-.order-item {
-    background-color: white;
-    width: 200px;
+.menu-item-addons {
+    font-family: var(--body-font);
+
+    grid-column: 2 / 3; /* align under item info */
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: #fafafa;
     border-radius: 10px;
-    padding: 6px 15px;
-    margin-bottom: 10px;
+    border: 1px solid #eee;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Individual addon row */
+.menu-item-addons label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+/* Custom addon checkbox */
+.menu-item-addons input[type="checkbox"] {
+    /* appearance: none;
+    -webkit-appearance: none; */
+
+    font-family: var(--body-font);
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.menu-item-addons input[type="checkbox"]:checked {
+    background: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.menu-item-addons input[type="checkbox"]:checked::after {
+    content: "✔";
+    color: white;
+    font-size: 12px;
+}
+
+/* Addon price styling */
+.menu-item-addons label span {
+    margin-left: auto;
+    font-weight: 600;
 }

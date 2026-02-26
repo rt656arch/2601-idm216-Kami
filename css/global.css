@@ -1,0 +1,64 @@
+@font-face {
+    font-family: BlackHanSans;
+    src: url(../fonts/BlackHanSans.ttf);
+}
+
+@font-face {
+    font-family: DM Sans;
+    src: url(../fonts/DMSans.ttf);
+}
+
+html {
+  --header-font: BlackHanSans;
+  --body-font: DM Sans;
+  
+  --primary-background: #F1E7DB;
+  --secondary-background: #FDF7F0;
+  --primary-red: #D72F1F;
+  --primary-blue: #1D152C;
+  --primary-yellow: #FEBF43;
+  --black: #000;
+}
+
+h1, h2, h3, h4, p {
+  padding: 0;
+  margin-block: 8px;
+}
+
+h1 {
+  font-family: var(--header-font);
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+h2 {
+  font-family: var(--header-font);
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+h3 {
+  font-family: var(--body-font);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+h4 {
+  font-family: var(--body-font);
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+p {
+  font-family: var(--body-font);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+a, button {
+  font-family: var(--body-font);
+}
+
+body {
+  background-color: var(--primary-red);
+}

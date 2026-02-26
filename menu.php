@@ -19,17 +19,21 @@ $connection->close();
     <title>Menu Template</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/noramlize.css">
+    <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
     <?php
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
 
+            $menu_item_link = "menu-item.php?id=" . $row['id'];
+            
+            $item_id = $row['id'];
             $item_korean_name = $row['korean-name'];
             $item_name = $row['name'];
             $item_base_price = $row['base-price'];
             $image_name = str_replace(' ', '-', $row['name']);
-            $image_path = "./media/menu-images/high-quality/" . $image_name . ".jpg";
+            $image_path = "./media/menu-images/" . $image_name . ".jpg";
     ?>
     <div class="menu-item-card">
         <div class="menu-item-img">
@@ -46,7 +50,7 @@ $connection->close();
                 </div>
             </div>
             <div class="menu-item-actions">
-                <button class="customize-button"></button>    
+                <a class="customize-button" href= <?php echo "/menu-item.php?id=" . htmlspecialchars($item_id)?> >Customize</a>    
                 <button class="add-to-cart-button"></button>    
             </div>
         </div>
