@@ -78,10 +78,10 @@ if (isset($_POST['submit_order']) && !empty($_POST['items'])) {
     exit();
 }
 
-if (!isset($_GET['order_id'])) {
-    header("Location: menu.php");
-    exit();
-}
+// if (!isset($_GET['order_id'])) {
+//     header("Location: menu.php");
+//     exit();
+// }
 
 $user_name = $_SESSION['user_name'] ?? "Guest";
 $order_id = (int) $_GET['order_id'];

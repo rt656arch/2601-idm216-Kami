@@ -121,8 +121,8 @@ if (!isset($result)) {
             </div>
 
             <div class="form-group">
-                <label for="number">Number</label>
-                <input type="text" id="number" name="user_number">
+                <label for="number">Phone Number</label>
+                <input type="text" id="number" name="user_number" inputmode="numeric" required>
             </div>
 
             <div class="form-group">

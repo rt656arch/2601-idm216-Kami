@@ -1,24 +1,54 @@
+<?php
+require 'db.php';
+
+$id = $_GET['id'];
+echo htmlspecialchars($id);
+
+if (!isset($result)) {
+    $stmt = $connection->prepare("SELECT * FROM entree_items WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $item = $result->fetch_assoc();
+
+    $korean_name = $item['korean-name'];
+    $name = $item['name'];
+    $base_price = '$' . $item['base-price'];
+    $description = $item['description'];
+    $allergens = 'Contains: ' . $item['allergens'];
+    $image_name = str_replace(' ', '-', $item['name']);
+    $image_path = "./media/menu-images/" . $image_name . ".jpg";
+}
+
+$connection->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Customize | Kami Food Truck</title>
-  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title><?php echo htmlspecialchars($name)?></title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="shell">
     <div>
       <div class="hero">
-        <img src="images/tteokbokki-full.png" alt="Tteokbokki">
-        <a href="home.html" >&#10094;</a>
-        <div>★</div>
+        <div class="hero-image">
+          <img src="images/tteokbokki-full.png" alt="Tteokbokki">
+        </div> 
+
+        <div class="back-button">
+            <a href="home.html" >&#10094;</a>
+        </div>
+
+        <div class="favorite-button">★</div>
       </div>
 
       <div>
         <p class="muted">떡볶이</p>
-        <div class="row">
+        <div class="item">
           <h1>Tteokbokki</h1>
           <span class="bold">$10</span>
         </div>
