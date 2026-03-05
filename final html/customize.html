@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Customize | Kami Food Truck</title>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/_base.css">
+  <link rel="stylesheet" href="css/_chrome.css">
+  <link rel="stylesheet" href="css/_controls.css">
+  <link rel="stylesheet" href="css/_buttons.css">
+  <link rel="stylesheet" href="css/_hero.css">
+  <link rel="stylesheet" href="css/_responsive.css">
+</head>
+<body>
+  <main>
+
+    <!-- PHP: $item = current item from DB -->
+    <div class="hero">
+      <img src="images/tteokbokki-full.png" alt="Tteokbokki">
+      <a href="menu.html">&#10094;</a>
+    </div>
+
+    <div class="detail">
+      <p class="muted detail-label">떡볶이</p>
+      <div class="detail-title">
+        <h1>Tteokbokki</h1>
+        <span class="bold">$10</span>
+      </div>
+      <p class="muted detail-desc">Chewy Korean rice cakes simmered in a spicy-sweet gochujang sauce, served with fish cakes and green onions.</p>
+      <p class="muted italic">*Contains: Fish, Soy, Sesame</p>
+
+      <!-- PHP: foreach ($addons as $opt) { ... } -->
+      <section>
+        <h3>Add Ons</h3>
+        <div class="option clickable" id="ramen">
+          <span class="check">✓</span>
+          <span class="bold">Ramen</span>
+          <span class="muted">$1</span>
+        </div>
+        <div class="option clickable">
+          <span class="check">✓</span>
+          <span class="bold">Egg</span>
+          <span class="muted">$1</span>
+        </div>
+        <div class="option clickable">
+          <span class="check">✓</span>
+          <span class="bold">Cheese</span>
+          <span class="muted">$1</span>
+        </div>
+      </section>
+
+      <!-- PHP: foreach ($sides as $opt) { ... } -->
+      <section>
+        <h3 class="italic">Sides</h3>
+        <div class="option clickable">
+          <span class="check">✓</span>
+          <span class="bold">Fried Rice Cakes</span>
+          <span class="muted">$6</span>
+        </div>
+        <div class="option clickable">
+          <span class="check">✓</span>
+          <span class="bold">Korean Cheese Dog</span>
+          <span class="muted">$5</span>
+        </div>
+        <div class="option clickable" id="rice">
+          <span class="check">✓</span>
+          <span class="bold">Small Rice [5oz]</span>
+          <span class="muted">$3</span>
+        </div>
+        <div class="option clickable">
+          <span class="check">✓</span>
+          <span class="bold">Large Rice [10oz]</span>
+          <span class="muted">$5</span>
+        </div>
+        <div class="option clickable">
+          <span class="check">✓</span>
+          <span class="bold">Side Kimchi</span>
+          <span class="muted">$1</span>
+        </div>
+      </section>
+
+      <!-- PHP: foreach ($drinks as $opt) { ... } -->
+      <section>
+        <h3>Drinks</h3>
+        <div class="option clickable">
+          <span class="check">✓</span>
+          <span class="bold">Soda</span>
+          <span class="muted">$1</span>
+        </div>
+        <div class="option clickable">
+          <span class="check">✓</span>
+          <span class="bold">Tea</span>
+          <span class="muted">$1</span>
+        </div>
+        <div class="option clickable">
+          <span class="check">✓</span>
+          <span class="bold">Coffee</span>
+          <span class="muted">$1</span>
+        </div>
+        <div class="option clickable">
+          <span class="check">✓</span>
+          <span class="bold">Water</span>
+          <span class="muted">$1</span>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Sticky add to bag bar -->
+    <div class="sticky">
+      <div class="qty">
+        <span>−</span>
+        <span>1</span>
+        <span>+</span>
+      </div>
+      <a href="bag.html" class="btn" id="add-btn">ADD ($10)</a>
+    </div>
+
+  </main>
+
+  <script>
+    /* -- Price update ---------------------------- */
+    const addBtn     = document.getElementById('add-btn');
+    const BASE_PRICE = 10;
+
+    /* prices per option — PHP team: replicate this logic server-side */
+    const prices = {
+      'Ramen': 1, 'Egg': 1, 'Cheese': 1,
+      'Fried Rice Cakes': 6, 'Korean Cheese Dog': 5,
+      'Small Rice [5oz]': 3, 'Large Rice [10oz]': 5, 'Side Kimchi': 1,
+      'Soda': 1, 'Tea': 1, 'Coffee': 1, 'Water': 1
+    };
+
+    function updatePrice() {
+      let total = BASE_PRICE;
+      document.querySelectorAll('.option.clickable .check.active').forEach(check => {
+        const name = check.parentElement.querySelector('.bold').textContent.trim();
+        if (prices[name]) total += prices[name];
+      });
+      addBtn.textContent = `ADD ($${total})`;
+    }
+
+    document.querySelectorAll('.option.clickable').forEach(option => {
+      option.addEventListener('click', () => {
+        option.querySelector('.check').classList.toggle('active');
+        updatePrice();
+      });
+    });
+  </script>
+</body>
+</html>

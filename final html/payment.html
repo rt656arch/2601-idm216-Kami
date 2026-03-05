@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Payment | Kami Food Truck</title>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/_base.css">
+  <link rel="stylesheet" href="css/_chrome.css">
+  <link rel="stylesheet" href="css/_controls.css">
+  <link rel="stylesheet" href="css/_buttons.css">
+  <link rel="stylesheet" href="css/_page.css">
+  <link rel="stylesheet" href="css/_responsive.css">
+</head>
+<body>
+  <main>
+    <header></header>
+
+    <div>
+      <img src="images/background.png" alt="red">
+      <a href="signup.html" class="btn btn--back">&#10094;</a>
+    </div>
+
+    <!-- PHP: $order = current order, $user = current user -->
+    <div class="page">
+
+      <div class="option">
+        <span class="bold">Pick-Up for</span>
+        Vicky
+      </div>
+
+      <div class="option">
+        <span class="bold">Pick-Up at</span>
+        <div class="time-wrap">
+          <span class="badge clickable" id="time-toggle">11:20am ▼</span>
+          <div class="time-picker" id="time-picker">
+            <div class="time-option active" data-time="11:20am">11:20am</div>
+            <div class="time-option" data-time="11:30am">11:30am</div>
+            <div class="time-option" data-time="11:40am">11:40am</div>
+            <div class="time-option" data-time="11:50am">11:50am</div>
+            <div class="time-option" data-time="12:00pm">12:00pm</div>
+            <div class="time-option" data-time="12:10pm">12:10pm</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="bold">Payment Method</h3>
+      <div class="col pay-methods" id="methods">
+
+        <div class="pill pill-method clickable" id="pay-card">
+          <div class="radio"></div>
+          <span class="bold">Card</span>
+        </div>
+
+        <div class="card-fields" id="card-fields">
+          <input type="text" class="field card-required" placeholder="0000 0000 0000 0000" inputmode="numeric" maxlength="19" id="card-num">
+          <div class="row">
+            <div><input type="text" class="field card-required" placeholder="MM/YY"       inputmode="numeric" maxlength="5"  id="card-exp"></div>
+            <div><input type="text" class="field card-required" placeholder="CVV"          inputmode="numeric" maxlength="4"  id="card-cvv"></div>
+          </div>
+          <div class="row">
+            <div><input type="text" class="field card-required" placeholder="Name on Card" maxlength="30" id="card-name"></div>
+            <div><input type="text" class="field card-required" placeholder="ZIP Code"     inputmode="numeric" maxlength="5"  id="card-zip"></div>
+          </div>
+        </div>
+
+        <div class="pill pill-method clickable" id="pay-ap">
+          <div class="radio"></div>
+          <span class="bold">Apple Pay</span>
+        </div>
+        <div class="pill pill-method clickable" id="pay-vm">
+          <div class="radio"></div>
+          <span class="bold">Venmo</span>
+        </div>
+        <div class="pill pill-method clickable" id="pay-zl">
+          <div class="radio"></div>
+          <span class="bold">Zelle</span>
+        </div>
+      </div>
+
+      <hr>
+
+      <section>
+        <h3>Add Utensils?</h3>
+        <div class="option clickable" id="fork-option">
+          <span class="check">✓</span>
+          <span class="bold">Fork</span>
+        </div>
+        <div class="option clickable" id="chop-option">
+          <span class="check">✓</span>
+          <span class="bold">Chopsticks</span>
+        </div>
+      </section>
+
+      <section>
+        <h3>Tip?</h3>
+        <div class="row">
+          <div class="pill pill-tip clickable" data-tip="1">$1</div>
+          <div class="pill pill-tip clickable" data-tip="2">$2</div>
+          <div class="pill pill-tip clickable" data-tip="3">$3</div>
+          <div class="pill pill-tip clickable" data-tip="4">$4</div>
+        </div>
+      </section>
+
+      <!-- PHP: $order->product_total, $order->credit_charge -->
+      <section class="summary" id="totals">
+        <div class="row"><span>Product Total</span><span>$14.00</span></div>
+        <div class="row"><span>3.95% Credit Charge</span><span>$0.55</span></div>
+        <div class="row" id="tip-row" style="display: none;">
+          <span>Tip</span><span id="tip-amount">$0.00</span>
+        </div>
+        <div class="row total">
+          <span>Total (2 items)</span><span id="total-amount">$14.55</span>
+        </div>
+      </section>
+
+      <hr>
+      <div class="btn disabled" id="pay-btn">Pay</div>
+    </div>
+  </main>
+
+  <script>
+    /* -- Time picker ----------------------------- */
+    const timeToggle  = document.getElementById('time-toggle');
+    const timePicker  = document.getElementById('time-picker');
+    const timeOptions = document.querySelectorAll('.time-option');
+
+    timeToggle.addEventListener('click', () => {
+      timePicker.classList.toggle('visible');
+      timeToggle.classList.toggle('open');
+    });
+    timeOptions.forEach(opt => {
+      opt.addEventListener('click', () => {
+        timeOptions.forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        timeToggle.textContent = opt.dataset.time + ' ▼';
+        timePicker.classList.remove('visible');
+        timeToggle.classList.remove('open');
+      });
+    });
+
+    /* -- Card field formatters ------------------- */
+    document.getElementById('card-num').addEventListener('input', function () {
+      const digits = this.value.replace(/\D/g, '').substring(0, 16);
+      this.value = digits.replace(/(.{4})/g, '$1 ').trim();
+    });
+    document.getElementById('card-exp').addEventListener('input', function () {
+      const digits = this.value.replace(/\D/g, '').substring(0, 4);
+      this.value = digits.length >= 3 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
+    });
+    document.getElementById('card-cvv').addEventListener('input',  function () { this.value = this.value.replace(/[^0-9]/g, ''); });
+    document.getElementById('card-name').addEventListener('input', function () { this.value = this.value.replace(/[^A-Za-z\s\-]/g, ''); });
+    document.getElementById('card-zip').addEventListener('input',  function () { this.value = this.value.replace(/[^0-9]/g, ''); });
+
+    /* -- Payment method selection ---------------- */
+    const methodIds    = ['pay-card', 'pay-ap', 'pay-vm', 'pay-zl'];
+    const payBtn       = document.getElementById('pay-btn');
+    const cardFields   = document.getElementById('card-fields');
+    let selectedMethod = '';
+
+    function selectMethod(id) {
+      methodIds.forEach(mid => {
+        document.getElementById(mid).classList.remove('active');
+        document.getElementById(mid).querySelector('.radio').classList.remove('active');
+      });
+      cardFields.classList.remove('visible');
+      if (id === selectedMethod) { selectedMethod = ''; payBtn.className = 'btn disabled'; return; }
+      selectedMethod = id;
+      document.getElementById(id).classList.add('active');
+      document.getElementById(id).querySelector('.radio').classList.add('active');
+      payBtn.className = 'btn clickable';
+      if (id === 'pay-card') cardFields.classList.add('visible');
+    }
+
+    methodIds.forEach(id => {
+      document.getElementById(id).addEventListener('click', () => selectMethod(id));
+    });
+    payBtn.addEventListener('click', () => {
+      if (!selectedMethod) return;
+      if (selectedMethod === 'pay-card') {
+        let valid = true;
+        document.querySelectorAll('.card-required').forEach(f => {
+          const empty = !f.value.trim();
+          f.style.borderColor = empty ? 'var(--red)' : '';
+          if (empty) valid = false;
+        });
+        if (!valid) return;
+      }
+      window.location.href = 'payment-loading.html';
+    });
+
+    /* -- Utensil toggles ------------------------- */
+    document.querySelectorAll('#fork-option, #chop-option').forEach(opt => {
+      opt.addEventListener('click', () => opt.querySelector('.check').classList.toggle('active'));
+    });
+
+    /* -- Tip selection --------------------------- */
+    const tipButtons  = document.querySelectorAll('.pill-tip');
+    const tipRow      = document.getElementById('tip-row');
+    const tipAmount   = document.getElementById('tip-amount');
+    const totalAmount = document.getElementById('total-amount');
+    const BASE_TOTAL  = 14.55;
+    let currentTip = 0;
+
+    tipButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tip = parseInt(btn.dataset.tip);
+        if (currentTip === tip) {
+          btn.classList.remove('active');
+          currentTip = 0;
+          tipRow.style.display = 'none';
+        } else {
+          tipButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentTip = tip;
+          tipAmount.textContent = `$${tip.toFixed(2)}`;
+          tipRow.style.display = 'flex';
+        }
+        totalAmount.textContent = `$${(BASE_TOTAL + currentTip).toFixed(2)}`;
+      });
+    });
+  </script>
+</body>
+</html>

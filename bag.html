@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Bag | Kami Food Truck</title>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/_base.css">
+  <link rel="stylesheet" href="css/_chrome.css">
+  <link rel="stylesheet" href="css/_controls.css">
+  <link rel="stylesheet" href="css/_buttons.css">
+  <link rel="stylesheet" href="css/_bag.css">
+  <link rel="stylesheet" href="css/_responsive.css">
+</head>
+
+<body>
+  <main>
+    <header></header>
+
+    <div>
+      <img src="images/background.png" alt="red">
+      <a href="customize.html" class="btn btn--back">&#10094;</a>
+    </div>
+
+    <h2 class="bag-title">BAG</h2>
+
+    <!-- Bag items -->
+    <div class="bag-items">
+
+      <!-- Tteokbokki -->
+      <div class="bag-card">
+        <img src="images/tteokbokki-ellipse.png" alt="Tteokbokki">
+        <div class="bag-card-body">
+          <p class="bold">Tteokbokki</p>
+          <p class="muted italic">+ Ramen $1</p>
+          <div class="bag-card-footer">
+            <div class="qty small">
+              <span>−</span>
+              <span>1</span>
+              <span>+</span>
+            </div>
+            <span class="bold">$10</span>
+          </div>
+        </div>
+        <a href="#" class="bag-remove">Remove</a>
+      </div>
+
+      <!-- Small Rice -->
+      <div class="bag-card">
+        <img src="images/rice-square.png" alt="Small Rice">
+        <div class="bag-card-body">
+          <p class="bold">Small Rice <span class="bold">[5oz]</span></p>
+          <div class="bag-card-footer">
+            <div class="qty small">
+              <span>−</span>
+              <span>1</span>
+              <span>+</span>
+            </div>
+            <span class="bold">$3</span>
+          </div>
+        </div>
+        <a href="#" class="bag-remove">Remove</a>
+      </div>
+
+    </div>
+
+    <!-- Total -->
+    <div class="row total bag-total">
+      <span>Total (2 items)</span>
+      <span>$14.00</span>
+    </div>
+
+    <a href="signup.html" class="btn bag-continue">Continue</a>
+
+    <br><br>
+
+    <nav>
+      <a href="menu.html">
+        <img src="images/navigation-bar-menu.png" alt="Menu">
+        <span>Menu</span>
+      </a>
+      <a href="home.html">
+        <img src="images/navigation-bar-home.png" alt="Home">
+        <span>Home</span>
+      </a>
+      <a href="bag-empty.html" class="active">
+        <img src="images/navigation-bar-bag.png" alt="Bag">
+        <span>Bag</span>
+      </a>
+    </nav>
+
+  </main>
+</body>
+</html>

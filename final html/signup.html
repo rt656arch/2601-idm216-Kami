@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Join | Kami Food Truck</title>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/_base.css">
+  <link rel="stylesheet" href="css/_controls.css">
+  <link rel="stylesheet" href="css/_buttons.css">
+  <link rel="stylesheet" href="css/_page.css">
+  <link rel="stylesheet" href="css/_responsive.css">
+</head>
+
+<body>
+  <main>
+    <a href="bag.html" class="btn btn--back">&#10094;</a>
+    <div class="page">
+      <form class="form-fields" action="payment.html" method="get">
+        <h1>Join!</h1>
+
+        <div>
+          <input type="tel" class="field" id="phone"
+            placeholder="(000) 000-0000*"
+            required inputmode="numeric" maxlength="14">
+        </div>
+
+        <div class="row">
+          <div>
+            <input type="text" class="field" id="first"
+              placeholder="First Name*"
+              required pattern="[A-Za-z\s\-]+" maxlength="14" title="Letters only">
+          </div>
+          <div>
+            <input type="text" class="field" id="last"
+              placeholder="Last Initial*"
+              required pattern="[A-Za-z]" maxlength="1" title="One letter">
+          </div>
+        </div>
+
+        <div>
+          <input type="password" class="field" id="pass"
+            placeholder="Password*" required minlength="6">
+        </div>
+        <div>
+          <input type="password" class="field" id="confirm"
+            placeholder="Confirm Password*" required minlength="6">
+        </div>
+
+        <p class="field-error" id="pass-error"></p>
+        <button type="submit" class="btn btn--outline" id="signup-btn">SIGN UP</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    const phone   = document.getElementById('phone');
+    const first   = document.getElementById('first');
+    const last    = document.getElementById('last');
+    const pass    = document.getElementById('pass');
+    const confirm = document.getElementById('confirm');
+    const passError = document.getElementById('pass-error');
+
+    // Phone formatter
+    phone.addEventListener('input', () => {
+      const digits = phone.value.replace(/\D/g, '').substring(0, 10);
+      const [a, b, c] = [digits.slice(0, 3), digits.slice(3, 6), digits.slice(6)];
+      if (digits.length > 6)      phone.value = `(${a}) ${b}-${c}`;
+      else if (digits.length > 3) phone.value = `(${a}) ${b}`;
+      else if (digits.length > 0) phone.value = `(${a}`;
+      else                        phone.value = '';
+    });
+
+    // Name sanitizers
+    first.addEventListener('input', () => {
+      first.value = first.value.replace(/[^A-Za-z\s\-]/g, '');
+    });
+    last.addEventListener('input', () => {
+      last.value = last.value.replace(/[^A-Za-z]/g, '');
+    });
+
+    // Password match check
+    function checkMatch() {
+      const mismatch = confirm.value && pass.value !== confirm.value;
+      confirm.style.borderColor = mismatch ? 'var(--red)' : '';
+      passError.textContent = mismatch ? 'Passwords do not match' : '';
+    }
+
+    pass.addEventListener('input', checkMatch);
+    confirm.addEventListener('input', checkMatch);
+
+    document.querySelector('.form-fields').addEventListener('submit', (e) => {
+      if (pass.value !== confirm.value) {
+        e.preventDefault();
+        confirm.style.borderColor = 'var(--red)';
+        passError.textContent = 'Passwords do not match';
+        confirm.focus();
+      }
+    });
+  </script>
+</body>
+</html>

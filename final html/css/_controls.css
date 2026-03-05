@@ -1,0 +1,128 @@
+/*
+ * _controls.css
+ *
+ * USED BY:
+ *   - bag.html
+ *   - customize.html
+ *   - menu.html
+ *   - payment.html
+ *   - signup.html
+ */
+
+.check,
+.radio {
+    flex-shrink: 0;
+    border: var(--border-ctrl) solid var(--black);
+    background: var(--white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.check {
+    width: 35px;
+    height: 35px;
+    border-radius: 6px;
+    color: transparent;
+    font-weight: 700;
+}
+
+.check.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+}
+
+.radio {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+}
+
+.radio.active {
+    background: var(--gold);
+    border-color: var(--gold);
+}
+
+/* ── Field ───────────────────────────────────────── */
+.field {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    display: block;
+    border: var(--border-ctrl) solid var(--black);
+    border-radius: var(--radius-pill);
+    font-size: var(--font-sm);
+    background: var(--white);
+}
+
+input.field {
+    outline: none;
+    color: var(--black);
+}
+
+input.field::placeholder {
+    color: var(--dk);
+}
+
+input.field:focus {
+    border-color: var(--red);
+}
+
+/* ── Option row ──────────────────────────────────── */
+.option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.option.clickable:active {
+    background: rgba(0,0,0,0.05);
+    border-radius: 8px;
+}
+
+.option .muted:last-child {
+    margin-left: auto;
+}
+
+/* ── Qty stepper ─────────────────────────────────── */
+.qty {
+    border: 2px solid var(--black);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.qty span {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.qty span:first-child {
+    background: var(--navy);
+    color: var(--white);
+}
+
+.qty span:nth-child(2) {
+    width: 40px;
+    background: var(--white);
+}
+
+.qty span:last-child {
+    background: var(--red);
+    color: var(--white);
+}
+
+/* ── Field error message ─────────────────────────── */
+.field-error {
+    color: var(--red);
+    font-size: var(--font-sm);
+    font-weight: 600;
+    margin: 0.25rem 0 0;
+    min-height: 1.2em;
+}
