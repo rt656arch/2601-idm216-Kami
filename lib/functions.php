@@ -33,7 +33,7 @@ function get_entrees() {
     $stmt = $connection->prepare("SELECT * FROM entree_items");
     if($stmt->execute()) {
         $executed = $stmt->get_result();
-        $result = $executed->fetch_assoc();
+        $result = $executed->fetch_all(MYSQLI_ASSOC);
         return $result;
     } else {
         return NULL;
@@ -46,7 +46,7 @@ function get_drinks() {
     $stmt = $connection->prepare("SELECT * FROM drink_items");
     if($stmt->execute()) {
         $executed = $stmt->get_result();
-        $result = $executed->fetch_assoc();
+        $result = $executed->fetch_all(MYSQLI_ASSOC);
         return $result;
     } else {
         return NULL;
