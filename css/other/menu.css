@@ -4,7 +4,7 @@
   border-radius: 10px;
   background-color: var(--secondary-background);
   border: 1px solid black;
-  
+
   display: flex;
   flex-direction: column;
 }
@@ -15,11 +15,11 @@
 }
 
 .menu-item-img img {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px 10px 0px 0px;
-    object-fit: cover; 
-    display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px 10px 0px 0px;
+  object-fit: cover;
+  display: block;
 }
 
 .menu-item-info {
