@@ -1,6 +1,8 @@
 <?php
+
 require 'db.php';
 require './lib/functions.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -21,9 +23,9 @@ require './lib/functions.php';
 
     <div class="menu-tabs">
       <br><br>
-      <a href="#" class="active" data-tab="appetizers">appetizers</a>
+      <a href="#" data-tab="appetizers">appetizers</a>
       <span>|</span>
-      <a href="#" data-tab="entrees">entrees</a>
+      <a href="#" class="active" data-tab="entrees">entrees</a>
       <span>|</span>
       <a href="#" data-tab="drinks">drinks</a>
     </div>
@@ -31,7 +33,7 @@ require './lib/functions.php';
 
 <div class="menu-list">
   <!-- ═══ APPETIZERS ═══ -->
-  <div class="menu-section active" id="appetizers">
+  <div class="menu-section" id="appetizers">
     <?php 
     $appetizers = get_appetizers();
     if($appetizers && (count($appetizers) > 0)) :
@@ -53,7 +55,7 @@ require './lib/functions.php';
           <span class="bold"><h4>$<?php echo htmlspecialchars($item_base_price)?></h4></span>
         </div>
         <div class="menu-card-btns">
-          <a href="bag.html" class="pill">ADD TO BAG</a>
+          <a href="bag.php" class="pill">ADD TO BAG</a>
         </div>
       </div>
     </div>
@@ -65,7 +67,7 @@ require './lib/functions.php';
   </div>
 
   <!-- ═══ ENTREES ═══ -->
-<div class="menu-section" id="entrees">
+<div class="menu-section active" id="entrees">
   <?php
     $entrees = get_entrees();
     if($entrees && (count($entrees) > 0)) :
@@ -88,7 +90,7 @@ require './lib/functions.php';
           <span class="bold"><h4>$<?php echo htmlspecialchars($item_base_price)?></h4></span>
         </div>
         <div class="menu-card-btns">
-          <a class="pill" href= <?php echo "/menu-item.php?id=" . htmlspecialchars($item_id)?> >Customize</a>
+          <a class="pill" href= "menu-item.php?id=<?php echo htmlspecialchars($item_id); ?>" >Customize</a>
         </div>
       </div>
     </div>
@@ -123,7 +125,7 @@ require './lib/functions.php';
           <span class="bold"><h4>$<?php echo htmlspecialchars($item_base_price)?></h4></span>
         </div>
         <div class="menu-card-btns">
-          <a href="bag.html" class="pill">ADD TO BAG</a>
+          <a href="bag.php" class="pill">ADD TO BAG</a>
         </div>
       </div>
     </div>

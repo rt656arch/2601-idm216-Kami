@@ -1,3 +1,10 @@
+<?php
+
+require 'db.php';
+require './lib/functions.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +23,12 @@
 <body>
   <main>
     <header></header>
+<!-- 
+array names for storing info
+add_ons[]
+adjustments[]
+sides[]
+drinks[] -->
 
     <div>
       <img src="images/background.png" alt="red">

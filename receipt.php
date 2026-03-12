@@ -6,7 +6,7 @@ if (isset($_POST['submit_order']) && !empty($_POST['items'])) {
     $sales_tax_rate = 0.08;
     $items   = $_POST['items'];
     $addons  = $_POST['order_items'] ?? [];
-    $tip = $_POST['tip-amount'];
+    $tip = $_POST['tip-amount'] ?? 0;
     $user_name = $_POST['user_name'];
     $_SESSION['user_name'] = $user_name;
     $subtotal = 0;
@@ -106,10 +106,10 @@ $connection->close();
 <head>
     <meta charset="UTF-8">
     <title>Receipt</title>
-    <link rel="stylesheet" href="./css/normalize.css">
-    <link rel="stylesheet" href="./css/global.css">
-    <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="./css/receipt.css">
+    <link rel="stylesheet" href="./css/other/noramlize.css">
+    <link rel="stylesheet" href="./css/other/global.css">
+    <link rel="stylesheet" href="./css/other/main.css">
+    <link rel="stylesheet" href="./css/other/receipt.css">
 </head>
 <body>
     <h2 style="font-family: var(--body-font)"><?= $user_name ?>, Your Receipt</h2>

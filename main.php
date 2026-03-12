@@ -3,7 +3,8 @@
 <?php
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
-require 'submit-order.php';
+require 'db.php';
+
 
 if (!isset($result)) {
     $stmt = $connection->prepare("SELECT * FROM menu_items");
@@ -18,9 +19,9 @@ if (!isset($result)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Items Page | Form </title>
-    <link rel="stylesheet" href="./css/noramlize.css">
-    <link rel="stylesheet" href="./css/global.css">
-    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/other/noramlize.css">
+    <link rel="stylesheet" href="./css/other/global.css">
+    <link rel="stylesheet" href="./css/other/main.css">
 </head>
 
 <body>
@@ -32,10 +33,11 @@ if (!isset($result)) {
         <?php
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
+                // echo '<pre>'; print_r($row); echo '</pre>'; die();
                 $item_id = $row['id'];
                 $item_name = $row['name'];
                 $item_description = $row['description'];
-                $item_base_price = $row['base-price'];
+                $item_base_price = $row['base_price']; 
                 $image_name = str_replace(' ', '-', $item_name);
                 $image_path = "./media/menu-images/" . $image_name . ".jpg";
             ?>

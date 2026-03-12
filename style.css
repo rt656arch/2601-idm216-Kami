@@ -213,6 +213,19 @@ input.field:focus {
     border-color: var(--red);
 }
 
+/* New additions */
+.option input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+fieldset {
+    border: none;
+}
+
+
 /* ── Buttons & pills ─────────────────────────── */
 .pill {
     display: block;

@@ -53,4 +53,23 @@ function get_drinks() {
     }
 }
 
+function get_addons($item_id) {
+    global $connection;
+
+    $stmt = $connection->prepare("SELECT * FROM add_on_items WHERE item_id = ?");
+    $stmt->bind_param('i', $item_id);
+    if($stmt->execute()) {
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    } else {
+        return NULL;
+    }
+}
+
+function add_item_to_order($order_info) {
+    global $connection;
+
+    
+}
+
 ?>
