@@ -32,8 +32,8 @@
 
       <div class="progress clickable" id="progress-toggle">
         <div class="progress-header">
-          <h3>Order #118's Progress</h3>
-          <span class="progress-arrow" id="arrow">▼</span>
+          <h3>Order #118 <span style="font-size: 0.65em;">Progress</span></h3>
+          <span class="progress-arrow" id="arrow" style="font-size: 1.4rem; line-height: 1;">▽</span>
         </div>
         <div class="bar"><div id="progress-bar"></div></div>
         <div class="status">
@@ -42,10 +42,14 @@
       </div>
 
       <div class="receipt" id="receipt-area">
-        <a href="https://www.google.com/maps/dir/?api=1&destination=33rd+and+Market+Philadelphia+PA+19148" target="_blank" class="receipt-link">📍<br>TAP TO VIEW LOCATION</a>
+
+        <a href="https://www.google.com/maps/dir/?api=1&destination=33rd+and+Market+Philadelphia+PA+19148" target="_blank" class="receipt-link" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.15rem;">
+          📍<br>TAP TO VIEW LOCATION
+        </a>
+
         <div class="thanks">
           <h2>Thank You For Ordering!</h2>
-          <p>We are glad you decided to choose the Kami Food Truck! We put genuine care to every part of our meals.</p>
+          <p>We are glad you decided to choose the Kami Food Truck! We put genuine care into every part of our meals.</p>
         </div>
 
         <!-- PHP: foreach ($order->items as $item) { ... } -->
@@ -78,12 +82,12 @@
           <div class="row"><span>Tip</span><span>$2.00</span></div>
           <div class="row total"><span>Total (2 items)</span><span>$16.55</span></div>
         </div>
-        <hr>
+        <hr><br>
       </div>
-
     </div>
 
     <br>
+
 
     <!-- Popular carousel -->
     <!-- PHP: foreach ($popular as $item) { ... } -->
@@ -130,7 +134,7 @@
             <p class="korean-label">김치볶음밥</p>
             <p class="bold">Kimchi Fried Rice</p>
           </div>
-          <span class="slide-price">$11</span>
+          <span class="grid-price">$11</span>
         </div>
       </a>
 
@@ -159,6 +163,7 @@
         <div>
           <p class="muted">김치볶음밥</p>
           <p class="bold">Kimchi Fried Rice</p>
+          <p class="slide-price" style="text-align: right;">$11</p>
         </div>
       </a>
 
@@ -167,6 +172,7 @@
         <div>
           <p class="muted">라면</p>
           <p class="bold">Ramen</p>
+          <p class="slide-price" style="text-align: right;">$9</p>
         </div>
       </a>
 
@@ -175,6 +181,7 @@
         <div>
           <p class="muted">비빔밥</p>
           <p class="bold">Bibimbap</p>
+          <p class="slide-price" style="text-align: right;">$11</p>
         </div>
       </a>
 
@@ -183,13 +190,14 @@
         <div>
           <p class="muted">불고기</p>
           <p class="bold">Bulgogi</p>
+          <p class="slide-price" style="text-align: right;">$12</p>
+          
         </div>
+        
       </a>
-
+      
     </div>
-
-    <br><br>
-
+    
     <nav>
       <a href="menu.html">
         <img src="images/navigation-bar-menu.png" alt="Menu">
@@ -238,7 +246,7 @@
           if (step >= messages.length - 1) clearInterval(timer);
         }, 1500);
       }, 500);
-    }, 5000);
+    }, 3000);
 
     /* -- Receipt collapse toggle ----------------- */
     const toggle  = document.getElementById('progress-toggle');
@@ -246,9 +254,12 @@
     const arrow   = document.getElementById('arrow');
 
     toggle.addEventListener('click', () => {
-      receipt.classList.toggle('collapsed');
-      arrow.textContent = receipt.classList.contains('collapsed') ? '▶' : '▼';
-    });
+    receipt.classList.toggle('collapsed');
+    const isCollapsed = receipt.classList.contains('collapsed');
+    arrow.style.transition = 'transform 0.30s ease';
+    arrow.style.transform = isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)';
+    arrow.textContent = isCollapsed ? '▼' : '▽';
+  });
   </script>
 </body>
 </html>

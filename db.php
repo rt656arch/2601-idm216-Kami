@@ -1,52 +1,57 @@
 <?php
 if (defined('DB_INITIALIZED')) return;
 define('DB_INITIALIZED', true);
-ini_set('session.gc_maxlifetime', 86400);    
+
+// ─── 1. Session config must come BEFORE session_start ───────────────────────
+ini_set('session.gc_maxlifetime', 86400);
 session_set_cookie_params([
-    'lifetime' => 86400,                  
+    'lifetime' => 86400,
     'path'     => '/',
-    'secure'   => true,                    
-    'httponly' => true,                      
+    'secure'   => true,
+    'httponly' => true,
     'samesite' => 'Lax'
 ]);
-session_start();
 
+// ─── 2. Start session only for browser requests (not API calls) ─────────────
+if (!defined('API_REQUEST') && session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// ─── 3. DB connection ────────────────────────────────────────────────────────
 $env_file = __DIR__ . '/.env.php';
 $env = file_exists($env_file) ? require $env_file : [];
 
 define('DB_SERVER', $env['DB_SERVER'] ?? 'localhost');
-define('DB_USER',   $env['DB_USER'] ?? 'root');
-define('DB_PASS',   $env['DB_PASS'] ?? 'root');
-define('DB_NAME',   $env['DB_NAME'] ?? 'root');
+define('DB_USER',   $env['DB_USER']   ?? 'root');
+define('DB_PASS',   $env['DB_PASS']   ?? 'root');
+define('DB_NAME',   $env['DB_NAME']   ?? 'idm216');
 
 $connection = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
-if (isset($_SESSION['db_session_id'])) {
-    // Validate the session hasn't expired in DB
-    $sid = $_SESSION['db_session_id'];
-    $stmt = $connection->prepare(
-        "SELECT id FROM sessions WHERE session_id = ? AND expires_at > NOW()"
-    );
-    $stmt->bind_param("s", $sid);
-    $stmt->execute();
-    $result = $stmt->get_result();
+// ─── 4. DB session tracking (only for browser sessions) ─────────────────────
+if (!defined('API_REQUEST') && session_status() === PHP_SESSION_ACTIVE) {
+    $session_id = session_id();
 
-    if ($result->num_rows === 0) {
-        // Session expired in DB — destroy and restart
-        session_destroy();
-        header('Location: login.php');
-        exit;
+    if (!empty($_SESSION['db_session_id'])) {
+        // Returning visitor — refresh the expiry instead of redirecting to login
+        $stmt = $connection->prepare(
+            "UPDATE sessions SET expires_at = ? WHERE session_id = ?"
+        );
+        $expires_at = date('Y-m-d H:i:s', strtotime('+24 hours'));
+        $stmt->bind_param("ss", $expires_at, $session_id);
+        $stmt->execute();
+
+    } else {
+        // First visit or cookie was cleared — upsert to avoid duplicate key errors
+        $expires_at = date('Y-m-d H:i:s', strtotime('+24 hours'));
+        $stmt = $connection->prepare(
+            "INSERT INTO sessions (session_id, expires_at) 
+             VALUES (?, ?)
+             ON DUPLICATE KEY UPDATE expires_at = VALUES(expires_at)"
+        );
+        $stmt->bind_param("ss", $session_id, $expires_at);
+        $stmt->execute();
+        $_SESSION['db_session_id'] = $session_id;
     }
-} else {
-    // New session — insert into DB
-    $session_id  = session_id();
-    $expires_at  = date('Y-m-d H:i:s', strtotime('+24 hours'));
-    $stmt = $connection->prepare(
-        "INSERT INTO sessions (session_id, expires_at) VALUES (?, ?)"
-    );
-    $stmt->bind_param("ss", $session_id, $expires_at);
-    $stmt->execute();
-    $_SESSION['db_session_id'] = $session_id;
 }
-
 ?>

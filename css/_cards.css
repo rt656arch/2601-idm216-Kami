@@ -13,6 +13,16 @@
     overflow: hidden;
 }
 
+.grid-item > div {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.grid-item > div .slide-price {
+  margin-top: auto;
+}
+
 .slide {
     background: var(--white);
 }
@@ -128,6 +138,8 @@ a.slide:active {
 .grid-item {
     border: 1.5px solid rgba(0,0,0,0.08);
     border-radius: 12px;
+    display: flex;
+    flex-direction: column;
 }
 
 .grid-item img {
@@ -140,6 +152,17 @@ a.slide:active {
 
 .grid-item div {
     padding: 0 0.75rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.grid-item .grid-price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: right;
+    margin-top: auto;
+    padding-top: 0.25rem;
 }
 
 /* ── Carousel wrapper ────────────────────────────── */
@@ -160,8 +183,8 @@ a.slide:active {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    padding: 3.5rem var(--pad) 1.5rem;
-    background: url('../images/bottom-of-home-background.png') top center / 100% auto no-repeat, var(--bg);
+    padding: 4rem var(--pad) 2.5rem;
+    background: url('../images/white-squiggle-top.png') top center / 100% auto no-repeat, #F7F1E9;
 }
 
 .grid-white {
@@ -172,4 +195,9 @@ a.slide:active {
 .grid .muted {
     color: var(--dk);
     font-weight: 600;
+}
+
+.grid-item:active {
+    transform: scale(0.97);
+    transition: transform 0.1s ease;
 }

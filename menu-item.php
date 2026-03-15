@@ -60,6 +60,11 @@ $connection->close();
       <?php endif; ?>
     <!-- </div> -->
       <br>
+  <form method="POST" action="cart.php">
+    <input type="hidden" name="item_id" value="<?php echo $item['id']; ?>">
+    <input type="hidden" name="item_name" value="<?php echo htmlspecialchars($name); ?>">
+    <input type="hidden" name="base_price" value="<?php echo $base_price; ?>">
+    <input type="hidden" name="qty" id="qty-hidden" value="1">
 
   <fieldset>
     <?php if (!empty($addons)): ?>
@@ -68,9 +73,9 @@ $connection->close();
       <?php foreach($addons as $addon): ?>
       <label class="option">
         <input type="checkbox"
-              name="addons[]"
-              value="<?php echo htmlspecialchars($addon['name']); ?>"
-              data-price="<?php echo $addon['price']; ?>">
+          name="addons[]"
+          value="<?php echo $addon['id']; ?>"
+          data-price="<?php echo $addon['price']; ?>">
         <span class="check"></span>
         <span class="bold"><?php echo htmlspecialchars($addon['name']); ?></span>
         <span class="muted">$<?php echo number_format($addon['price'], 2); ?></span>
@@ -85,7 +90,7 @@ $connection->close();
       <label class="option">
         <input type="checkbox"
               name="sides[]"
-              value="<?php echo htmlspecialchars($side['name']); ?>"
+              value="<?php echo $side['id']; ?>"
               data-price="<?php echo $side['base-price']; ?>">
         <span class="check"></span>
         <span class="bold"><?php echo htmlspecialchars($side['name']); ?></span>
@@ -100,7 +105,7 @@ $connection->close();
       <label class="option">
         <input type="checkbox"
               name="drinks[]"
-              value="<?php echo htmlspecialchars($drink['name']); ?>"
+              value="<?php echo $drink['id']; ?>"
               data-price="<?php echo $drink['base-price']; ?>">
         <span class="check"></span>
         <span class="bold"><?php echo htmlspecialchars($drink['name']); ?></span>
@@ -121,7 +126,9 @@ $connection->close();
       <span id="qty-count">1</span>
       <span id="qty-inc">+</span>
     </div>
-    <a href="bag.html" class="btn" id="add-btn">ADD ($<?php echo number_format($base_price, 2); ?>)</a>
+    <button type="submit" class="btn" id="add-btn">
+      ADD ($<?php echo number_format($base_price, 2); ?>)
+    </button>
   </div>
 </main>
 
@@ -131,23 +138,28 @@ $connection->close();
   const BASE_PRICE = <?php echo $base_price; ?>;
   let qty = 1;
   document.querySelectorAll('.option input[type="checkbox"]').forEach(input => {
-  input.addEventListener('change', function() {
-    const check = this.nextElementSibling; // the .check span
-    check.classList.toggle('active', this.checked);
-    check.textContent = this.checked ? '✓' : '';
-    updatePrice();
+    input.addEventListener('change', function() {
+      const check = this.nextElementSibling;
+      check.classList.toggle('active', this.checked);
+      check.textContent = this.checked ? '✓' : '';
+      updatePrice();
+    });
   });
-});
 
   /* ── Quantity ── */
   document.getElementById('qty-dec').addEventListener('click', () => {
-    if (qty > 1) { qty--; updatePrice(); }
+    if (qty > 1) updateQty(qty - 1);
   });
   document.getElementById('qty-inc').addEventListener('click', () => {
-    qty++;
-    updatePrice();
+    updateQty(qty + 1);
   });
 
+  function updateQty(newQty) {
+    qty = newQty;
+    document.getElementById('qty-count').textContent = qty;
+    document.getElementById('qty-hidden').value = qty;
+    updatePrice();
+  }
   function updatePrice() {
     document.getElementById('qty-count').textContent = qty;
 

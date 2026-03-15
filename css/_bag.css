@@ -6,12 +6,37 @@
  *   - bag.html
  */
 
+/* ── Bag header row (back btn + title) ───────────── */
+.bag-header {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem var(--pad) 0;
+    gap: 0.5rem;
+}
+
+.bag-header .bag-title {
+    flex: 1;
+    margin: 0;
+    border-bottom: none;
+}
+
+.bag-header-spacer {
+    width: 40px;
+    flex-shrink: 0;
+}
+
 .bag-title {
     text-align: center;
     text-transform: uppercase;
     padding: 0.5rem 0;
     border-bottom: 3px solid var(--black);
     margin: 0 var(--pad);
+}
+
+.bag-divider {
+    border: none;
+    border-top: 3px solid var(--black);
+    margin: 0.5rem var(--pad) 0;
 }
 
 .bag-items {
