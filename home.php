@@ -149,11 +149,11 @@
           <img src="images/navigation-bar-menu.png" alt="Menu" />
           <span>Menu</span>
         </a>
-        <a href="home.html" class="active">
+        <a href="home.php" class="active">
           <img src="images/navigation-bar-home.png" alt="Home" />
           <span>Home</span>
         </a>
-        <a href="bag-empty.html">
+        <a href="bag.php">
           <img src="images/navigation-bar-bag.png" alt="Bag" />
           <span>Bag</span>
         </a>
