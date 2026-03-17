@@ -220,7 +220,7 @@ foreach ($entry['drinks'] ?? [] as $drink_id) {
       <img src="images/navigation-bar-menu.png" alt="Menu">
       <span>Menu</span>
     </a>
-    <a href="home.html">
+    <a href="home.php">
       <img src="images/navigation-bar-home.png" alt="Home">
       <span>Home</span>
     </a>
