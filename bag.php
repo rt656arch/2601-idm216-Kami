@@ -1,5 +1,4 @@
 <?php
-session_start();
 require 'db.php';
 
 $cart = $_SESSION['cart'] ?? [];
@@ -203,7 +202,7 @@ foreach ($entry['drinks'] ?? [] as $drink_id) {
   <?php endforeach; ?>
 
 <?php endforeach; ?>
-<?php endif; ?>
+
 </div>
 
   <div class="row total bag-total">
@@ -213,6 +212,8 @@ foreach ($entry['drinks'] ?? [] as $drink_id) {
 
   <a href="payment.php" class="btn bag-continue">Continue</a>
   <br><br>
+
+  <?php endif; ?>
 
   <nav>
     <a href="menu.php">
