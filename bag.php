@@ -88,13 +88,8 @@ foreach ($entry['drinks'] ?? [] as $drink_id) {
   <div class="bag-items">
 
       <?php foreach ($cart as $index => $entry):
-<<<<<<< Updated upstream
-          $image_name = str_replace(' ', '-', $entry['item_name']);
-          $image_path = "./media/menu-images/" . $image_name . ".jpg";
-=======
         $image_name = str_replace(' ', '-', $entry['item_name']);
         $image_path = "./media/menu-images/" . $image_name . ".jpg";
->>>>>>> Stashed changes
         $line_total = $entry['base_price'] * $entry['qty'];
         $addon_names = [];
 
