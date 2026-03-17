@@ -1,6 +1,40 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+// ─── ADD (GET) - appetizers and drinks from menu.php ────────────────────────
+if (isset($_GET['item_id'])) {
+    $_SESSION['cart'][] = [
+        'item_id'    => (int)$_GET['item_id'],
+        'item_name'  => $_GET['item_name'],
+        'base_price' => (float)$_GET['price'],
+        'qty'        => 1,
+        'addons'     => [],
+        'sides'      => [],
+        'drinks'     => [],
+    ];
+    header('Location: bag.php');
+    exit;
+}
+
+// ─── ADD (POST) - entrees from menu-item.php ─────────────────────────────────
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['item_id'])) {
+    $_SESSION['cart'][] = [
+        'item_id'    => (int)$_POST['item_id'],
+        'item_name'  => $_POST['item_name'],
+        'base_price' => (float)$_POST['base_price'],
+        'qty'        => max(1, (int)$_POST['qty']),
+        'addons'     => $_POST['addons'] ?? [],
+        'sides'      => $_POST['sides']  ?? [],
+        'drinks'     => $_POST['drinks'] ?? [],
+    ];
+    header('Location: bag.php');
+    exit;
+}
+
 if (isset($_GET['remove'])) {
   $index = (int)$_GET['remove'];
   if (isset($_SESSION['cart'][$index])) {
@@ -59,23 +93,3 @@ if (isset($_GET['update_qty'])) {
   }
   exit;
 }
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['item_id'])) {
-  if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-  }
-
-  $_SESSION['cart'][] = [
-    'item_id'    => (int)$_POST['item_id'],
-    'item_name'  => $_POST['item_name'],
-    'base_price' => (float)$_POST['base_price'],
-    'qty'        => max(1, (int)$_POST['qty']),
-    'addons'     => $_POST['addons']  ?? [],
-    'sides'      => $_POST['sides']   ?? [],
-    'drinks'     => $_POST['drinks']  ?? [],
-  ];
-
-}
-
-header('Location: bag.php');
-exit;

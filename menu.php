@@ -58,7 +58,7 @@ require './lib/functions.php';
           <span class="bold"><h4>$<?php echo htmlspecialchars($item_base_price)?></h4></span>
         </div>
         <div class="menu-card-btns">
-          <a href="bag.php" class="pill">ADD TO BAG</a>
+          <a class="pill" href="cart.php?item_id=<?php echo $item_id; ?>&item_name=<?php echo urlencode($item_name); ?>&price=<?php echo $item_base_price; ?>">ADD TO BAG</a>
         </div>
       </div>
     </div>
@@ -128,7 +128,8 @@ require './lib/functions.php';
           <span class="bold"><h4>$<?php echo htmlspecialchars($item_base_price)?></h4></span>
         </div>
         <div class="menu-card-btns">
-          <a href="bag.php" class="pill">ADD TO BAG</a>
+          <a class="pill" href="cart.php?item_id=<?php echo $item_id; ?>&item_name=<?php echo urlencode($item_name); ?>&price=<?php echo $item_base_price; ?>">ADD TO BAG</a>
+
         </div>
       </div>
     </div>
@@ -143,7 +144,6 @@ require './lib/functions.php';
 <br><br>
 <!-- Bottom Nav -->
 <nav>
-<<<<<<< Updated upstream
     <a href="menu.php" class="active">
       <img src="images/navigation-bar-menu.png" alt="Menu">
       <span>Menu</span>
@@ -157,23 +157,6 @@ require './lib/functions.php';
       <span>Bag</span>
     </a>
   </nav>
-=======
-  <a href="menu.php" class="active">
-    <img src="images/navigation-bar-menu.png" alt="Menu">
-    <span>Menu</span>
-  </a>
-
-  <a href="home.html">
-    <img src="images/navigation-bar-home.png" alt="Home">
-    <span>Home</span>
-  </a>
-
-  <a href="bag-empty.html">
-    <img src="images/navigation-bar-bag.png" alt="Bag">
-    <span>Bag</span>
-  </a>
-</nav>
->>>>>>> Stashed changes
 </main>
 </body>
 <!-- </script> -->
