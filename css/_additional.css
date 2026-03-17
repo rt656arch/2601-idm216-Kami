@@ -1,0 +1,12 @@
+.time-picker {
+  position: absolute;
+  top: calc(100% + 0.5rem); /* sits just below the toggle badge */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  /* keep your existing styles like background, border-radius, etc. */
+}
+
+.time-wrap {
+  position: relative;
+}

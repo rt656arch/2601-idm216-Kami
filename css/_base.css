@@ -1,0 +1,142 @@
+/*
+ * _base.css
+ *
+ * USED BY:
+ *   - bag-empty.html
+ *   - bag.html
+ *   - customize.html
+ *   - home-user-reciept.html
+ *   - home.html
+ *   - index.html
+ *   - menu.html
+ *   - payment-loading.html
+ *   - payment.html
+ *   - signup.html
+ */
+
+:root {
+    --bg: #F1E7DB;
+    --red: #D72F19;
+    --navy: #1D152C;
+    --gold: #FEBF43;
+    --white: #FFF;
+    --grey: #C5C5C5;
+    --dk: #424242;
+    --black: #1C1C1C;
+    --link-blue: #1A73E8;
+    --bg-outer: #1c1c1c;
+    --green: #62950F;
+    --font-display: 'Black Han Sans', sans-serif;
+    --font-sm: 0.85rem;
+    --w: 393px;
+    --pad: 1.25rem;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --radius-pill: 25px;
+    --border-ctrl: 2.5px;
+}
+
+/* ── Reset ───────────────────────────────────────── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    background: var(--bg);
+    color: var(--black);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+input, button {
+    font: inherit;
+}
+
+h1, h2, h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+/* ── Layout primitives ───────────────────────────── */
+main {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--bg);
+    position: relative;
+    overflow-x: hidden;
+    padding-bottom: 5rem;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+section {
+    margin-top: 1.5rem;
+}
+
+section h3 {
+    color: var(--red);
+    margin-bottom: 0.75rem;
+}
+
+/* ── Utilities ───────────────────────────────────── */
+.bold {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.muted {
+    font-size: var(--font-sm);
+    color: var(--dk);
+}
+
+.korean {
+    color: var(--red);
+    font-style: italic;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.small {
+    transform: scale(0.85);
+    transform-origin: left;
+}
+
+.total {
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 2;
+}
+
+.disabled {
+    background: var(--grey);
+    color: var(--dk);
+    opacity: 0.6;
+    pointer-events: none;
+}
+

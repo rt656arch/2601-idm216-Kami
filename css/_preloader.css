@@ -1,0 +1,38 @@
+/*
+ * _preloader.css
+ *
+ * USED BY:
+ *   - index.html
+ *   - payment-loading.html
+ */
+
+.preloader {
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+}
+
+.preloader img {
+    width: 100%;
+    height: 100vh;
+    object-fit: contain;
+    background: var(--white);
+}
+
+.preloader.payment {
+    background: var(--white);
+}
+
+body:has(.preloader.payment) {
+    overflow: hidden;
+}
+
+main:has(.preloader.payment) {
+    overflow: hidden;
+    max-height: 100vh;
+    padding-bottom: 0;
+}

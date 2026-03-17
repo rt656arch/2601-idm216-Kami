@@ -4,9 +4,7 @@ require 'db.php';
 $stmt = $connection->prepare("SELECT * FROM menu_items");
 $stmt->execute();
 $result = $stmt->get_result();
-$result_count = $result->num_rows;
 
-$connection->close();
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +43,7 @@ $connection->close();
 
                 while ($row = $result->fetch_assoc()):
                     $image_name = str_replace(' ', '-', $row['name']);
-                    $image_path = "../menu-images/dish-bagged-image/" . $image_name . ".png";
+                    $image_path = "./menu-images/high-quality/" . $image_name . ".jpg";
                 ?>
                     <tr>
                         <?php foreach ($row as $value): ?>
@@ -53,8 +51,41 @@ $connection->close();
                         <?php endforeach; ?>
 
                         <td class="img-cell">
-                            <img src="<?= $image_path ?>" alt="<?= htmlspecialchars($row['name']) ?>">
+                            <img src="<?= $image_path ?>" alt="Picture of <?=htmlspecialchars($row['name']) ?>">
                         </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>No records found.</p>
+    <?php endif; ?>
+
+    <?php
+        $stmt = $connection->prepare("SELECT * FROM add_on_items");
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $connection->close();
+    ?>
+    <h2>Add-on Items</h2>
+    <?php if ($result && $result->num_rows > 0): ?>
+        <table class="db-table">
+            <thead>
+                <tr>
+                    <?php
+                    while ($field = $result->fetch_field()) {
+                        echo "<th>" . htmlspecialchars($field->name) . "</th>";
+                    }
+                    ?>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <tr>
+                        <?php foreach ($row as $value): ?>
+                            <td><?= htmlspecialchars($value) ?></td>
+                        <?php endforeach; ?>
                     </tr>
                 <?php endwhile; ?>
             </tbody>

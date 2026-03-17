@@ -1,0 +1,295 @@
+body {
+    margin: 40px 60px;
+    background-color: var(--primary-background);
+}
+
+header {
+    text-align: center;
+}
+
+form {
+    align-items: center;
+}
+
+.menu-item {
+    display: grid;
+    grid-template-columns: 1fr 8fr;
+    align-content: center;
+    gap: 16px;
+
+    padding: 16px;
+    margin-bottom: 14px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.menu-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+}
+
+.item-checkbox {
+    width: 20px;
+    height: 20px;
+    align-self: center;
+    cursor: pointer;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.item-name {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.item-desc {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+.item-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #c0392b;
+    margin-top: 4px;
+}
+
+.item-id {
+    font-size: 16px;
+    color: #aaa;
+}
+
+.item-img img{
+    width: 120px;       /* same as image size */
+    height: 120px;
+    object-fit: cover; /* hides overflow */
+    border-radius: 10px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    margin: 30px auto 10px;
+
+    padding: 14px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+
+    background: var(--primary-red);
+    color: white;
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.item-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 24px;
+    height: 24px;
+    border: 2px solid #bbb;
+    border-radius: 6px;
+    background: white;
+
+    cursor: pointer;
+    position: relative;
+
+    display: flex;        
+    align-items: center;  
+    justify-content: center; 
+}
+
+.item-checkbox:checked {
+    background: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.item-checkbox:checked::after {
+    content: "✔";
+    color: white;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.item-checkbox {
+    margin: 0 auto;
+}
+
+.menu-item-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.menu-item-addons {
+    font-family: var(--body-font);
+
+    grid-column: 2 / 3; /* align under item info */
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: #fafafa;
+    border-radius: 10px;
+    border: 1px solid #eee;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Individual addon row */
+.menu-item-addons label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+/* Custom addon checkbox */
+.menu-item-addons input[type="checkbox"] {
+    /* appearance: none;
+    -webkit-appearance: none; */
+
+    font-family: var(--body-font);
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.menu-item-addons input[type="checkbox"]:checked {
+    background: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.menu-item-addons input[type="checkbox"]:checked::after {
+    content: "✔";
+    color: white;
+    font-size: 12px;
+}
+
+/* Addon price styling */
+.menu-item-addons label span {
+    margin-left: auto;
+    font-weight: 600;
+}
+
+.tips {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+
+.tip {
+  position: relative;
+  height: 39px;
+  min-width: 75px;
+  font-family: var(--body-font);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+
+.tip input {
+  position: absolute;
+  opacity: 0;
+}
+
+
+.tip label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  border-radius: 7px;
+
+  background-color: #1D152C;
+  color: #FDF7F0;
+  cursor: pointer;
+
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+
+.tip input:checked + label {
+  background: #D72F19;
+}
+
+
+.account-section, .tips{
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    font-family: Arial, sans-serif;
+}
+
+.account-section h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.form-group {
+    font-family: var(--body-font);
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #000;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}
