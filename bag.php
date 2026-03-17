@@ -23,31 +23,25 @@ foreach ($cart as $entry) {
     $line_total  += $addon_total * $entry['qty'];
   }
 
-  // Sides by ID
   foreach ($entry['sides'] ?? [] as $side_id) {
-    $total_items++;
-    $stmt = $connection->prepare("SELECT name, `base-price` FROM appetizer_items WHERE id = ?");
-    $stmt->bind_param("i", $side_id);
-    $stmt->execute();
-    $row = $stmt->get_result()->fetch_assoc();
-    $side_price  = $row['base-price'] ?? 0;
-    $side_name   = $row['name'] ?? '';
-    $side_image  = "images/" . str_replace(' ', '-', strtolower($side_name)) . "-ellipse.png";
-    $line_total += $side_price * $entry['qty'];
-  }
+  $stmt = $connection->prepare("SELECT `base-price` FROM appetizer_items WHERE id = ?");
+  $stmt->bind_param("i", $side_id);
+  $stmt->execute();
+  $side_price = $stmt->get_result()->fetch_assoc()['base-price'] ?? 0;
+  $side_qty   = $entry['side_qtys'][$side_id] ?? 1;  // use independent qty
+  $total_items += $side_qty;
+  $line_total += $side_price * $side_qty;             // not $entry['qty']
+}
 
-  // Drinks by ID
-  foreach ($entry['drinks'] ?? [] as $drink_id) {
-    $total_items++;
-    $stmt = $connection->prepare("SELECT name, `base-price` FROM drink_items WHERE id = ?");
-    $stmt->bind_param("i", $drink_id);
-    $stmt->execute();
-    $row = $stmt->get_result()->fetch_assoc();
-    $drink_price  = $row['base-price'] ?? 0;
-    $drink_name   = $row['name'] ?? '';
-    $drink_image  = "images/" . str_replace(' ', '-', strtolower($drink_name)) . "-ellipse.png";
-    $line_total  += $drink_price * $entry['qty'];
-  }
+foreach ($entry['drinks'] ?? [] as $drink_id) {
+  $stmt = $connection->prepare("SELECT `base-price` FROM drink_items WHERE id = ?");
+  $stmt->bind_param("i", $drink_id);
+  $stmt->execute();
+  $drink_price = $stmt->get_result()->fetch_assoc()['base-price'] ?? 0;
+  $drink_qty   = $entry['drink_qtys'][$drink_id] ?? 1;  // use independent qty
+  $total_items += $drink_qty;  
+  $line_total += $drink_price * $drink_qty;              // not $entry['qty']
+}
 
   $total_price += $line_total;
 }
@@ -109,7 +103,9 @@ foreach ($cart as $entry) {
       ?>
 
   <!-- Main item card -->
-  <div class="bag-card" data-index="<?php echo $index; ?>">
+  <div class="bag-card" 
+     data-index="<?php echo $index; ?>"
+     data-price="<?php echo $entry['base_price']; ?>">
     <img src="<?php echo htmlspecialchars($image_path); ?>"
          alt="<?php echo htmlspecialchars($entry['item_name']); ?>">
     <div class="bag-card-body">
@@ -128,10 +124,10 @@ foreach ($cart as $entry) {
         <span class="bold">$<?php echo number_format($line_total, 2); ?></span>
       </div>
     </div>
-    <a href="cart.php?remove=<?php echo $index; ?>" class="bag-remove">Remove</a>
+    <a href="#" class="bag-remove" onclick="confirmRemove(event, <?php echo $index; ?>, 'item')">Remove</a>
   </div>
 
-  <!-- Sides as their own cards -->
+  <!-- Sides -->
   <?php foreach ($entry['sides'] ?? [] as $side_id):
     $stmt = $connection->prepare("SELECT name, `base-price` FROM appetizer_items WHERE id = ?");
     $stmt->bind_param("i", $side_id);
@@ -140,26 +136,32 @@ foreach ($cart as $entry) {
     $side_name  = $side['name'] ?? '';
     $side_price = $side['base-price'] ?? 0;
     $side_image = "./media/menu-images/" . str_replace(' ', '-', $side_name) . ".jpg";
-    ?>
-    <div class="bag-card">
-      <img src="<?php echo htmlspecialchars($side_image); ?>"
-          alt="<?php echo htmlspecialchars($side_name); ?>">
-      <div class="bag-card-body">
-        <p class="bold"><?php echo htmlspecialchars($side_name); ?></p>
-        <div class="bag-card-footer">
-          <div class="qty small">
-            <span class="qty-dec">−</span>
-            <span class="qty-count"><?php echo $entry['qty']; ?></span>
-            <span class="qty-inc">+</span>
-          </div>
-          <span class="bold">$<?php echo number_format($side_price, 2); ?></span>
+    $side_qty   = $entry['side_qtys'][$side_id] ?? 1;  // independent qty, defaults to 1
+  ?>
+  <div class="bag-card"
+      data-index="<?php echo $index; ?>"
+      data-side-id="<?php echo $side_id; ?>"
+      data-price="<?php echo $side_price; ?>">
+    <img src="<?php echo htmlspecialchars($side_image); ?>"
+        alt="<?php echo htmlspecialchars($side_name); ?>">
+    <div class="bag-card-body">
+      <p class="bold"><?php echo htmlspecialchars($side_name); ?></p>
+      <div class="bag-card-footer">
+        <div class="qty small">
+          <span class="qty-dec">−</span>
+          <span class="qty-count"><?php echo $side_qty; ?></span>
+          <span class="qty-inc">+</span>
         </div>
+        <span class="bold">$<?php echo number_format($side_price * $side_qty, 2); ?></span>
       </div>
-      <a href="cart.php?remove_side=<?php echo $index; ?>&id=<?php echo $side_id; ?>" class="bag-remove">Remove</a>
     </div>
+    <a href="#"
+      class="bag-remove"
+      onclick="confirmRemove(event, <?php echo $index; ?>, 'side', <?php echo $side_id; ?>)">Remove</a>
+  </div>
   <?php endforeach; ?>
 
-  <!-- Drinks as their own cards -->
+  <!-- Drinks -->
   <?php foreach ($entry['drinks'] ?? [] as $drink_id):
     $stmt = $connection->prepare("SELECT name, `base-price` FROM drink_items WHERE id = ?");
     $stmt->bind_param("i", $drink_id);
@@ -168,23 +170,29 @@ foreach ($cart as $entry) {
     $drink_name  = $drink['name'] ?? '';
     $drink_price = $drink['base-price'] ?? 0;
     $drink_image = "./media/menu-images/" . str_replace(' ', '-', $drink_name) . ".jpg";
-    ?>
-    <div class="bag-card">
-      <img src="<?php echo htmlspecialchars($drink_image); ?>"
-          alt="<?php echo htmlspecialchars($drink_name); ?>">
-      <div class="bag-card-body">
-        <p class="bold"><?php echo htmlspecialchars($drink_name); ?></p>
-        <div class="bag-card-footer">
-          <div class="qty small">
-            <span class="qty-dec">−</span>
-            <span class="qty-count"><?php echo $entry['qty']; ?></span>
-            <span class="qty-inc">+</span>
-          </div>
-          <span class="bold">$<?php echo number_format($drink_price, 2); ?></span>
+    $drink_qty   = $entry['drink_qtys'][$drink_id] ?? 1;  // independent qty, defaults to 1
+  ?>
+  <div class="bag-card"
+      data-index="<?php echo $index; ?>"
+      data-drink-id="<?php echo $drink_id; ?>"
+      data-price="<?php echo $drink_price; ?>">
+    <img src="<?php echo htmlspecialchars($drink_image); ?>"
+        alt="<?php echo htmlspecialchars($drink_name); ?>">
+    <div class="bag-card-body">
+      <p class="bold"><?php echo htmlspecialchars($drink_name); ?></p>
+      <div class="bag-card-footer">
+        <div class="qty small">
+          <span class="qty-dec">−</span>
+          <span class="qty-count"><?php echo $drink_qty; ?></span>
+          <span class="qty-inc">+</span>
         </div>
+        <span class="bold">$<?php echo number_format($drink_price * $drink_qty, 2); ?></span>
       </div>
-      <a href="cart.php?remove_drink=<?php echo $index; ?>&id=<?php echo $drink_id; ?>" class="bag-remove">Remove</a>
     </div>
+    <a href="#"
+      class="bag-remove"
+      onclick="confirmRemove(event, <?php echo $index; ?>, 'drink', <?php echo $drink_id; ?>)">Remove</a>
+  </div>
   <?php endforeach; ?>
 
 <?php endforeach; ?>
@@ -213,7 +221,86 @@ foreach ($cart as $entry) {
       <span>Bag</span>
     </a>
   </nav>
-
 </main>
+
+<script>
+  // Qty controls
+  document.querySelectorAll('.bag-card').forEach(card => {
+    const decBtn  = card.querySelector('.qty-dec');
+    const incBtn  = card.querySelector('.qty-inc');
+    const qtyEl   = card.querySelector('.qty-count');
+    const priceEl = card.querySelector('.bag-card-footer .bold');
+
+    if (!decBtn || !incBtn) return;
+
+    const index    = card.dataset.index;
+    const sideId   = card.dataset.sideId   ?? null;
+    const drinkId  = card.dataset.drinkId  ?? null;
+    const price    = parseFloat(card.dataset.price);
+
+    decBtn.addEventListener('click', () => {
+      let qty = parseInt(qtyEl.textContent);
+      if (qty <= 1) return;
+      updateQty(index, qty - 1, qtyEl, priceEl, price, sideId, drinkId);
+    });
+
+    incBtn.addEventListener('click', () => {
+      let qty = parseInt(qtyEl.textContent);
+      updateQty(index, qty + 1, qtyEl, priceEl, price, sideId, drinkId);
+    });
+  });
+
+  function updateQty(index, newQty, qtyEl, priceEl, price, sideId, drinkId) {
+    qtyEl.textContent = newQty;
+    if (priceEl && price) {
+      priceEl.textContent = '$' + (price * newQty).toFixed(2);
+    }
+
+    let url = `cart.php?update_qty=${index}&qty=${newQty}`;
+    if (sideId)  url += `&side_id=${sideId}`;
+    if (drinkId) url += `&drink_id=${drinkId}`;
+
+    fetch(url).then(() => location.reload());
+  }
+
+  function confirmRemove(e, index, type, id = null) {
+    e.preventDefault();
+
+    if (type === 'item') {
+      const card      = document.querySelector(`.bag-card[data-index="${index}"]`);
+      const itemName  = card.querySelector('.bold').textContent.trim();
+      const hasSides  = document.querySelectorAll(`.bag-card[data-side-id][data-index="${index}"]`).length > 0;
+      const hasDrinks = document.querySelectorAll(`.bag-card[data-drink-id][data-index="${index}"]`).length > 0;
+
+      let message = `Remove ${itemName} from your bag?`;
+
+      if (hasSides && hasDrinks) {
+        message = `Remove ${itemName} and its associated sides and drinks from your bag?`;
+      } else if (hasSides) {
+        message = `Remove ${itemName} and its associated sides from your bag?`;
+      } else if (hasDrinks) {
+        message = `Remove ${itemName} and its associated drinks from your bag?`;
+      }
+
+      if (!confirm(message)) return;
+      window.location.href = `cart.php?remove=${index}&confirm_all=1`;
+      return;
+    }
+
+    if (type === 'side' || type === 'drink') {
+      const card = document.querySelector(
+        `.bag-card[data-${type}-id="${id}"][data-index="${index}"]`
+      );
+      const itemName = card ? card.querySelector('.bold').textContent.trim() : type;
+      if (!confirm(`Remove ${itemName} from your bag?`)) return;
+    }
+
+    let url = '';
+    if (type === 'side')  url = `cart.php?remove_side=${index}&id=${id}`;
+    if (type === 'drink') url = `cart.php?remove_drink=${index}&id=${id}`;
+    window.location.href = url;
+  }
+</script>
+
 </body>
 </html>

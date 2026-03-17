@@ -1,3 +1,52 @@
+<?php
+  require_once './db.php';
+
+  $order_id = (int)($_GET['order_id'] ?? 0);
+  if ($order_id <= 0) { header('Location: menu.php'); exit; }
+
+  // Fetch order
+  $stmt = $connection->prepare("SELECT * FROM kami_orders WHERE id = ?");
+  $stmt->bind_param("i", $order_id);
+  $stmt->execute();
+  $order = $stmt->get_result()->fetch_assoc();
+  if (!$order) { header('Location: menu.php'); exit; }
+
+  // Fetch order items
+  $stmt = $connection->prepare("SELECT * FROM kami_order_items WHERE order_id = ?");
+  $stmt->bind_param("i", $order_id);
+  $stmt->execute();
+  $line_items = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+  // Count total items and build grouped structure
+  $total_items = 0;
+  $grouped     = [];
+  foreach ($line_items as $line) {
+    if ($line['type'] === 'item') {
+      $total_items += $line['quantity'] > 0 ? $line['quantity'] : 1;
+      $grouped[] = ['main' => $line, 'addons' => [], 'sides' => [], 'drinks' => []];
+    } else {
+      $last = count($grouped) - 1;
+      if ($last >= 0) {
+        $key = match($line['type']) {
+          'addon' => 'addons',
+          'side'  => 'sides',
+          'drink' => 'drinks',
+          default => 'addons'
+        };
+        $grouped[$last][$key][] = $line;
+        // count sides and drinks as their own items
+        if ($line['type'] === 'side' || $line['type'] === 'drink') {
+          $total_items += $line['quantity'] > 0 ? $line['quantity'] : 1;
+        }
+      }
+    }
+  }
+
+  $credit_charge = round($order['subtotal'] * 0.0395, 2);
+  $connection->close();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +81,7 @@
 
       <div class="progress clickable" id="progress-toggle">
         <div class="progress-header">
-          <h3>Order #118 <span style="font-size: 0.65em;">Progress</span></h3>
+          <h3>Order #<?php echo $order_id; ?> <span style="font-size: 0.65em;">Progress</span></h3>
           <span class="progress-arrow" id="arrow" style="font-size: 1.4rem; line-height: 1;">▽</span>
         </div>
         <div class="bar"><div id="progress-bar"></div></div>
@@ -49,38 +98,69 @@
 
         <div class="thanks">
           <h2>Thank You For Ordering!</h2>
+          <h4>Pickup Time: <?php echo htmlspecialchars($order['pickup_time'])?></h4>
           <p>We are glad you decided to choose the Kami Food Truck! We put genuine care into every part of our meals.</p>
         </div>
 
+    <table>
+      <thead>
+        <tr><th>QTY</th><th>ITEM</th><th>PRICE</th></tr>
+      </thead>
         <!-- PHP: foreach ($order->items as $item) { ... } -->
-        <table>
-          <thead>
-            <tr><th>QTY</th><th>ITEM</th><th>PRICE</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td><span class="bold">Tteokbokki</span><span class="muted">+ Ramen</span></td>
-              <td>$11</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td><span class="bold">Small Rice [5oz]</span></td>
-              <td>$3</td>
-            </tr>
-          </tbody>
-        </table>
+        <tbody>
+          <?php foreach ($grouped as $group):
+            $addon_total = 0;
+            foreach ($group['addons'] as $addon) {
+              $addon_total += $addon['price'];
+            }
+            $line_total = ($group['main']['price'] + $addon_total) * $group['main']['quantity'];
+          ?>
+          <tr>
+            <td><?php echo $group['main']['quantity']; ?></td>
+            <td>
+              <span class="bold"><?php echo htmlspecialchars($group['main']['item_name']); ?></span>
+              <?php foreach ($group['addons'] as $addon): ?>
+                <br><span class="muted">+ <?php echo htmlspecialchars($addon['item_name']); ?></span>
+              <?php endforeach; ?>
+            </td>
+            <td>$<?php echo number_format($line_total, 2); ?></td>
+          </tr>
+
+          <?php foreach ($group['sides'] as $side): ?>
+          <tr>
+            <td><?php echo $side['quantity']; ?></td>
+            <td><span class="bold"><?php echo htmlspecialchars($side['item_name']); ?></span></td>
+            <td>$<?php echo number_format($side['price'] * $side['quantity'], 2); ?></td>
+          </tr>
+          <?php endforeach; ?>
+
+          <?php foreach ($group['drinks'] as $drink): ?>
+          <tr>
+            <td><?php echo $drink['quantity']; ?></td>
+            <td><span class="bold"><?php echo htmlspecialchars($drink['item_name']); ?></span></td>
+            <td>$<?php echo number_format($drink['price'] * $drink['quantity'], 2); ?></td>
+          </tr>
+          <?php endforeach; ?>
+
+          <?php endforeach; ?>
+        </tbody>
+      </table>
 
         <div class="row">
-          <span class="bold">ORDER #118</span>
-          <span class="muted">10/31/2025 2:04PM</span>
+          <span class="bold">ORDER #<?php echo $order_id; ?></span>
+          <span class="muted">Order Placed: <?php echo date('m/d/Y g:iA', strtotime($order['created_at'])); ?></span>
         </div>
 
         <div class="summary">
-          <div class="row"><span>Product Total</span><span>$14.00</span></div>
-          <div class="row"><span>3.95% Credit Charge</span><span>$0.55</span></div>
-          <div class="row"><span>Tip</span><span>$2.00</span></div>
-          <div class="row total"><span>Total (2 items)</span><span>$16.55</span></div>
+          <div class="row"><span>Subtotal</span><span>$<?php echo number_format($order['subtotal'], 2); ?></span></div>
+          <div class="row"><span>3.95% Credit Charge</span><span>$<?php echo number_format($credit_charge, 2); ?></span></div>
+          <?php if ($order['tip'] > 0): ?>
+          <div class="row"><span>Tip</span><span>$<?php echo number_format($order['tip'], 2); ?></span></div>
+          <?php endif; ?>
+          <div class="row total">
+            <span>Total (<?php echo $total_items; ?> item<?php echo $total_items !== 1 ? 's' : ''; ?>)</span>
+            <span>$<?php echo number_format($order['total'], 2); ?></span>
+          </div>
         </div>
         <hr><br>
       </div>

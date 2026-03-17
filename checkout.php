@@ -1,4 +1,5 @@
 <?php
+
 require 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -25,7 +26,7 @@ $order_id = $connection->insert_id;
 foreach ($cart as $entry) {
   $item_id    = $entry['item_id'];
   $item_price = $entry['base_price'];
-  $qty        = $entry['qty'];
+  $qty = (int)$entry['qty'];
   $subtotal  += $item_price * $qty;
 
   // Insert main item
@@ -58,36 +59,38 @@ foreach ($cart as $entry) {
   }
 
   // Sides
-  foreach ($entry['sides'] ?? [] as $side_id) {
-    $stmt = $connection->prepare("SELECT name, `base-price` FROM appetizer_items WHERE id = ?");
-    $stmt->bind_param("i", $side_id);
-    $stmt->execute();
-    $side      = $stmt->get_result()->fetch_assoc();
-    $subtotal += $side['base-price'] * $qty;
+    foreach ($entry['sides'] ?? [] as $side_id) {
+      $side_qty  = (int)($entry['side_qtys'][$side_id] ?? $entry['qty']); // use independent qty
+      $stmt = $connection->prepare("SELECT name, `base-price` FROM appetizer_items WHERE id = ?");
+      $stmt->bind_param("i", $side_id);
+      $stmt->execute();
+      $side      = $stmt->get_result()->fetch_assoc();
+      $subtotal += $side['base-price'] * $side_qty;
 
-    $stmt = $connection->prepare(
-      "INSERT INTO kami_order_items (order_id, menu_item_id, item_name, price, type, quantity)
-       VALUES (?, ?, ?, ?, 'side', ?)"
-    );
-    $stmt->bind_param("iisdi", $order_id, $side_id, $side['name'], $side['base-price'], $qty);
-    $stmt->execute();
-  }
+      $stmt = $connection->prepare(
+        "INSERT INTO kami_order_items (order_id, menu_item_id, item_name, price, type, quantity)
+        VALUES (?, ?, ?, ?, 'side', ?)"
+      );
+      $stmt->bind_param("iisdi", $order_id, $side_id, $side['name'], $side['base-price'], $side_qty);
+      $stmt->execute();
+    }
 
-  // Drinks
-  foreach ($entry['drinks'] ?? [] as $drink_id) {
-    $stmt = $connection->prepare("SELECT name, `base-price` FROM drink_items WHERE id = ?");
-    $stmt->bind_param("i", $drink_id);
-    $stmt->execute();
-    $drink     = $stmt->get_result()->fetch_assoc();
-    $subtotal += $drink['base-price'] * $qty;
+    // Drinks
+    foreach ($entry['drinks'] ?? [] as $drink_id) {
+      $drink_qty = (int)($entry['drink_qtys'][$drink_id] ?? $entry['qty']); // use independent qty
+      $stmt = $connection->prepare("SELECT name, `base-price` FROM drink_items WHERE id = ?");
+      $stmt->bind_param("i", $drink_id);
+      $stmt->execute();
+      $drink     = $stmt->get_result()->fetch_assoc();
+      $subtotal += $drink['base-price'] * $drink_qty;
 
-    $stmt = $connection->prepare(
-      "INSERT INTO kami_order_items (order_id, menu_item_id, item_name, price, type, quantity)
-       VALUES (?, ?, ?, ?, 'drink', ?)"
-    );
-    $stmt->bind_param("iisdi", $order_id, $drink_id, $drink['name'], $drink['base-price'], $qty);
-    $stmt->execute();
-  }
+      $stmt = $connection->prepare(
+        "INSERT INTO kami_order_items (order_id, menu_item_id, item_name, price, type, quantity)
+        VALUES (?, ?, ?, ?, 'drink', ?)"
+      );
+      $stmt->bind_param("iisdi", $order_id, $drink_id, $drink['name'], $drink['base-price'], $drink_qty);
+      $stmt->execute();
+    }
 }
 
 $tax   = round($subtotal * $sales_tax, 2);

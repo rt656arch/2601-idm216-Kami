@@ -21,19 +21,23 @@ foreach ($cart as $entry) {
   }
 
   foreach ($entry['sides'] ?? [] as $side_id) {
-    $total_items++;
+    $side_qty     = (int)($entry['side_qtys'][$side_id] ?? 1);
+    $total_items += $side_qty;
     $stmt = $connection->prepare("SELECT `base-price` FROM appetizer_items WHERE id = ?");
     $stmt->bind_param("i", $side_id);
     $stmt->execute();
-    $line_total += $stmt->get_result()->fetch_assoc()['base-price'] ?? 0;
+    $side_price  = $stmt->get_result()->fetch_assoc()['base-price'] ?? 0;
+    $line_total += $side_price * $side_qty;
   }
 
   foreach ($entry['drinks'] ?? [] as $drink_id) {
-    $total_items++;
+    $drink_qty    = (int)($entry['drink_qtys'][$drink_id] ?? 1);
+    $total_items += $drink_qty;
     $stmt = $connection->prepare("SELECT `base-price` FROM drink_items WHERE id = ?");
     $stmt->bind_param("i", $drink_id);
     $stmt->execute();
-    $line_total += $stmt->get_result()->fetch_assoc()['base-price'] ?? 0;
+    $drink_price  = $stmt->get_result()->fetch_assoc()['base-price'] ?? 0;
+    $line_total  += $drink_price * $drink_qty;
   }
 
   $subtotal += $line_total;
@@ -45,7 +49,7 @@ $base_total    = round($subtotal + $credit_charge, 2);
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en">o
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -57,7 +61,7 @@ $base_total    = round($subtotal + $credit_charge, 2);
   <link rel="stylesheet" href="css/_buttons.css">
   <link rel="stylesheet" href="css/_page.css">
   <link rel="stylesheet" href="css/_responsive.css">
-  <link rel="stylesheet" href="css/_.css">
+  <link rel="stylesheet" href="css/_additional.css">
 </head>
 <body>
   <main>
@@ -135,7 +139,7 @@ $base_total    = round($subtotal + $credit_charge, 2);
 
       <section class="summary" id="totals">
         <div class="row">
-          <span>Product Total</span>
+          <span>Subtotal</span>
           <span>$<?php echo number_format($subtotal, 2); ?></span>
         </div>
         <div class="row">
@@ -177,7 +181,7 @@ $base_total    = round($subtotal + $credit_charge, 2);
 
       const rowA = makeRow([
         makeInput('card-exp',  'MM/YY',  'numeric', 5),
-        makeInput('card-cvv',  'CVV',    'numeric', 4),
+        makeInput('card-cvv',  'CVV',    'numeric', 3),
       ]);
       const rowB = makeRow([
         makeInput('card-name', 'Name on Card', 'text',    30),
@@ -277,12 +281,6 @@ $base_total    = round($subtotal + $credit_charge, 2);
         }, { once: true });
         payBtn.className = 'btn disabled';
       }
-    });
-
-    /* -- Pay button ------------------------------ */
-    payBtn.addEventListener('click', () => {
-      if (payBtn.classList.contains('disabled')) return;
-      window.location.href = 'payment-loading.html';
     });
 
     /* -- Time picker ----------------------------- */

@@ -66,10 +66,30 @@ function get_addons($item_id) {
     }
 }
 
-function add_item_to_order($order_info) {
+function get_order($order_id) {
     global $connection;
 
-    
+    $stmt = $connection->prepare("SELECT * FROM kami_orders WHERE id = ?");
+    $stmt->bind_param('i', $order_id);
+    if($stmt->execute()) {
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    } else {
+        return NULL;
+    }
+}
+
+function get_order_items($order_id) {
+    global $connection;
+
+    $stmt = $connection->prepare("SELECT * FROM kami_order_items WHERE order_id = ?");
+    $stmt->bind_param('i', $order_id);
+    if($stmt->execute()) {
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    } else {
+        return NULL;
+    }
 }
 
 ?>

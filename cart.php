@@ -18,6 +18,7 @@ if (isset($_GET['remove_side'])) {
     $_SESSION['cart'][$index]['sides'] = array_values(
       array_filter($_SESSION['cart'][$index]['sides'], fn($s) => (int)$s !== $id)
     );
+    unset($_SESSION['cart'][$index]['side_qtys'][$id]); // clean up orphaned qty
   }
 
   header('Location: bag.php');
@@ -32,9 +33,30 @@ if (isset($_GET['remove_drink'])) {
     $_SESSION['cart'][$index]['drinks'] = array_values(
       array_filter($_SESSION['cart'][$index]['drinks'], fn($d) => (int)$d !== $id)
     );
+    unset($_SESSION['cart'][$index]['drink_qtys'][$id]); // clean up orphaned qty
   }
 
   header('Location: bag.php');
+  exit;
+}
+
+if (isset($_GET['update_qty'])) {
+  $index   = (int)$_GET['update_qty'];
+  $newQty  = max(1, (int)$_GET['qty']);
+  $sideId  = isset($_GET['side_id'])  ? (int)$_GET['side_id']  : null;
+  $drinkId = isset($_GET['drink_id']) ? (int)$_GET['drink_id'] : null;
+
+  if (isset($_SESSION['cart'][$index])) {
+    if ($sideId) {
+      // sides store as array of IDs so qty is shared — 
+      // to support independent qty, sides need their own qty tracking
+      $_SESSION['cart'][$index]['side_qtys'][$sideId] = $newQty;
+    } elseif ($drinkId) {
+      $_SESSION['cart'][$index]['drink_qtys'][$drinkId] = $newQty;
+    } else {
+      $_SESSION['cart'][$index]['qty'] = $newQty;
+    }
+  }
   exit;
 }
 
