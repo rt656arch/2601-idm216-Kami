@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'db.php';
 
 $cart = $_SESSION['cart'] ?? [];
@@ -87,8 +88,13 @@ foreach ($entry['drinks'] ?? [] as $drink_id) {
   <div class="bag-items">
 
       <?php foreach ($cart as $index => $entry):
+<<<<<<< Updated upstream
           $image_name = str_replace(' ', '-', $entry['item_name']);
           $image_path = "./media/menu-images/" . $image_name . ".jpg";
+=======
+        $image_name = str_replace(' ', '-', $entry['item_name']);
+        $image_path = "./media/menu-images/" . $image_name . ".jpg";
+>>>>>>> Stashed changes
         $line_total = $entry['base_price'] * $entry['qty'];
         $addon_names = [];
 
@@ -218,7 +224,6 @@ foreach ($entry['drinks'] ?? [] as $drink_id) {
       <img src="images/navigation-bar-menu.png" alt="Menu">
       <span>Menu</span>
     </a>
-    <a href="home.php">
       <img src="images/navigation-bar-home.png" alt="Home">
       <span>Home</span>
     </a>

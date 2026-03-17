@@ -130,6 +130,7 @@ $connection->close();
       ADD ($<?php echo number_format($base_price, 2); ?>)
     </button>
   </div>
+</form>
 </main>
 
 

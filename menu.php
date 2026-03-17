@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 require 'db.php';
 require './lib/functions.php';
@@ -13,6 +15,7 @@ require './lib/functions.php';
   <title>Menu | Kami Food Truck</title>
   <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/_responsive.css">
 </head>
 
 <body>
@@ -140,6 +143,7 @@ require './lib/functions.php';
 <br><br>
 <!-- Bottom Nav -->
 <nav>
+<<<<<<< Updated upstream
     <a href="menu.php" class="active">
       <img src="images/navigation-bar-menu.png" alt="Menu">
       <span>Menu</span>
@@ -153,6 +157,23 @@ require './lib/functions.php';
       <span>Bag</span>
     </a>
   </nav>
+=======
+  <a href="menu.php" class="active">
+    <img src="images/navigation-bar-menu.png" alt="Menu">
+    <span>Menu</span>
+  </a>
+
+  <a href="home.html">
+    <img src="images/navigation-bar-home.png" alt="Home">
+    <span>Home</span>
+  </a>
+
+  <a href="bag-empty.html">
+    <img src="images/navigation-bar-bag.png" alt="Bag">
+    <span>Bag</span>
+  </a>
+</nav>
+>>>>>>> Stashed changes
 </main>
 </body>
 <!-- </script> -->
