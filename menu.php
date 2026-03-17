@@ -140,21 +140,19 @@ require './lib/functions.php';
 <br><br>
 <!-- Bottom Nav -->
 <nav>
-  <div class="active">
-    <img src="images/navigation-bar-menu.png" alt="Menu">
-    <span>Menu</span>
-  </div>
-
-  <div>
-    <img src="images/navigation-bar-home.png" alt="Home">
-    <span>Home</span>
-  </div>
-
-  <div>
-    <img src="images/navigation-bar-bag.png" alt="Bag">
-    <span>Bag</span>
-  </div>
-</nav>
+    <a href="menu.php" class="active">
+      <img src="images/navigation-bar-menu.png" alt="Menu">
+      <span>Menu</span>
+    </a>
+    <a href="home.php">
+      <img src="images/navigation-bar-home.png" alt="Home">
+      <span>Home</span>
+    </a>
+    <a href="bag.php">
+      <img src="images/navigation-bar-bag.png" alt="Bag">
+      <span>Bag</span>
+    </a>
+  </nav>
 </main>
 </body>
 <!-- </script> -->

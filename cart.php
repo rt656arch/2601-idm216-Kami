@@ -77,5 +77,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['item_id'])) {
 
 }
 
-header('Location: menu.php');
+header('Location: bag.php');
 exit;

@@ -67,6 +67,16 @@ foreach ($entry['drinks'] ?? [] as $drink_id) {
   <header></header>
   <div><img src="images/background.png" alt="red"></div>
 
+  <?php if (empty($cart)): ?>
+
+    <h2 class="bag-title">BAG</h2>
+    <div class="bag-empty">
+      <img src="images/bag_duck.png" alt="Kami mascot" style="margin-top: 2rem;">
+      <a href="menu.php" class="btn">Order Now</a>
+    </div>
+
+  <?php else: ?>
+
   <div class="bag-header">
     <a onclick="history.back()" class="btn btn--back">&#10094;</a>
     <h2 class="bag-title">BAG</h2>
@@ -76,13 +86,9 @@ foreach ($entry['drinks'] ?? [] as $drink_id) {
 
   <div class="bag-items">
 
-    <?php if (empty($cart)): ?>
-      <p class="muted">Your bag is empty.</p>
-
-    <?php else: ?>
       <?php foreach ($cart as $index => $entry):
-        $image_name = str_replace(' ', '-', strtolower($entry['item_name']));
-        $image_path = "./media/menu-images/" . $image_name . ".jpg";
+          $image_name = str_replace(' ', '-', $entry['item_name']);
+          $image_path = "./media/menu-images/" . $image_name . ".jpg";
         $line_total = $entry['base_price'] * $entry['qty'];
         $addon_names = [];
 
