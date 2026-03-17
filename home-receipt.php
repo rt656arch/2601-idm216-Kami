@@ -174,7 +174,7 @@
     <h2 class="label">Popular:</h2>
     <div class="carousel">
 
-      <a href="customize.html" class="slide active">
+      <a href="menu-item.php?id=6" class="slide active">
         <img src="images/tteokbokki-ellipse.png" alt="Tteokbokki">
         <div class="slide-info">
           <div>
@@ -185,7 +185,7 @@
         </div>
       </a>
 
-      <a href="customize.html" class="slide">
+      <a href="menu-item.php?id=1" class="slide">
         <img src="images/bibimbap-ellipse.png" alt="Bibimbap">
         <div class="slide-info">
           <div>
@@ -196,7 +196,7 @@
         </div>
       </a>
 
-      <a href="customize.html" class="slide">
+      <a href="menu-item.php?id=2" class="slide">
         <img src="images/bulgogi-ellipse.png" alt="Bulgogi">
         <div class="slide-info">
           <div>
@@ -207,7 +207,7 @@
         </div>
       </a>
 
-      <a href="customize.html" class="slide">
+      <a href="menu-item.php?id=5" class="slide">
         <img src="images/kimchi-fried-rice-ellipse.png" alt="Kimchi Fried Rice">
         <div class="slide-info">
           <div>
@@ -218,7 +218,7 @@
         </div>
       </a>
 
-      <a href="customize.html" class="slide">
+      <a href="menu-item.php?id=10" class="slide">
         <img src="images/mandu-ellipse.png" alt="Mandu">
         <div class="slide-info">
           <div>
@@ -238,7 +238,7 @@
     <div class="grid">
       <h2 class="label" style="grid-column: 1 / -1; margin-left: 0; justify-self: start;">Worth Trying:</h2>
 
-      <a href="customize.html" class="grid-item">
+      <a href="menu-item.php?id=5" class="grid-item">
         <img src="images/kimchi-fried-rice-ellipse.png" alt="Kimchi Fried Rice">
         <div>
           <p class="muted">김치볶음밥</p>
@@ -247,7 +247,7 @@
         </div>
       </a>
 
-      <a href="customize.html" class="grid-item">
+      <a href="menu-item.php?id=8" class="grid-item">
         <img src="images/mandu-ellipse.png" alt="Ramen">
         <div>
           <p class="muted">라면</p>
@@ -256,7 +256,7 @@
         </div>
       </a>
 
-      <a href="customize.html" class="grid-item">
+      <a href="menu-item.php?id=1" class="grid-item">
         <img src="images/bibimbap-ellipse.png" alt="Bibimbap">
         <div>
           <p class="muted">비빔밥</p>
@@ -265,7 +265,7 @@
         </div>
       </a>
 
-      <a href="customize.html" class="grid-item">
+      <a href="menu-item.php?id=2" class="grid-item">
         <img src="images/bulgogi-ellipse.png" alt="Bulgogi">
         <div>
           <p class="muted">불고기</p>
@@ -279,15 +279,15 @@
     </div>
     
     <nav>
-      <a href="menu.html">
+      <a href="menu.php">
         <img src="images/navigation-bar-menu.png" alt="Menu">
         <span>Menu</span>
       </a>
-      <a href="home.html" class="active">
+      <a href="home.php" class="active">
         <img src="images/navigation-bar-home.png" alt="Home">
         <span>Home</span>
       </a>
-      <a href="bag-empty.html">
+      <a href="bag.php">
         <img src="images/navigation-bar-bag.png" alt="Bag">
         <span>Bag</span>
       </a>
