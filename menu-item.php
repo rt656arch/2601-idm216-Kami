@@ -36,6 +36,12 @@ $connection->close();
   <title><?php echo htmlspecialchars($name); ?> | Kami Food Truck</title>
   <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/_responsive.css">
+  <style>
+    body {
+      background-color: #1c1c1c;
+    }
+  </style>
 </head>
 
 <body>
@@ -44,7 +50,7 @@ $connection->close();
     <div class="hero">
       <img src="<?php echo htmlspecialchars($image_path); ?>" alt="<?php echo htmlspecialchars($name); ?>">
       <a href="menu.php">&#10094;</a>
-      <div>★</div>
+      <!-- <div>★</div> -->
     </div>
 
     <div class="detail">

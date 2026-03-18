@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 require 'db.php';
 require './lib/functions.php';
 
@@ -16,6 +13,11 @@ require './lib/functions.php';
   <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="css/_responsive.css">
+  <style>
+    body {
+      background-color: #1c1c1c;
+    }
+  </style>
 </head>
 
 <body>

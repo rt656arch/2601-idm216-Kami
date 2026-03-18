@@ -2,6 +2,13 @@
 if (defined('DB_INITIALIZED')) return;
 define('DB_INITIALIZED', true);
 
+// ─── 0. Set session save path to writable directory ──────────────────────────
+$session_path = __DIR__ . '/sessions';
+if (!is_dir($session_path)) {
+  mkdir($session_path, 0700, true);
+}
+session_save_path($session_path);
+
 // ─── 1. Session config must come BEFORE session_start ───────────────────────
 ini_set('session.gc_maxlifetime', 86400);
 session_set_cookie_params([
